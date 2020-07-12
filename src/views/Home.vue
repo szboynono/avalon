@@ -1,28 +1,26 @@
 <template>
   <div class="home">
     <h1>AVALON</h1>
-    <button @click="onStart">Start a Game</button>
-    <button>Join a room</button>
-    <hello-world />
+    <button-group :primaryText="'Start Game'" :primaryFn="onStart" :secondaryText="'Join Game'" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-import router from '../router'
+import ButtonGroup from "@/components/ButtonGroup.vue";
+import router from "../router";
 
 export default {
   components: {
-    HelloWorld
+    ButtonGroup
   },
   setup() {
     function onStart() {
-      router.push('/about');
+      router.push("/name");
     }
     return {
       onStart
-    }
+    };
   }
-}
+};
 </script>
