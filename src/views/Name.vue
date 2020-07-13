@@ -13,7 +13,7 @@ import router from "../router";
 import axios from "axios";
 import { useStore } from 'vuex';
 
-export default defineComponent({
+export default ({
   components: {
     ButtonGroup
   },
@@ -21,21 +21,24 @@ export default defineComponent({
     const nameInput = ref("");
     const store = useStore();
     onMounted(() => {
-      axios
-        .get("http://localhost:8081/room")
-        .then(res => {
-          if (res.data) {
-            store.commit('updateRoom', res.data)
-          }
-        })
-        .catch(err => {
-          console.error(err);
-        });
+      if(!store.getters.room) {
+        axios
+          .get("http://localhost:8081/room")
+          .then(res => {
+            if (res.data) {
+              console.log(res.data);
+              store.commit('updateRoom', res.data)
+            }
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      }
     });
 
     function onContinueClick() {
       store.commit('updateName', nameInput.value);
-      router.push("/room/" + store.state.room);
+      router.push("/room/" + store.getters.room);
     }
     return { onContinueClick, nameInput };
   }

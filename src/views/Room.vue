@@ -1,3 +1,23 @@
 <template>
-  <h1>Room: </h1>
+  <div>
+    <h1>Room: {{store.getters.room}}</h1>
+    <h2>Name: {{store.getters.name}}</h2>
+  </div>
 </template>
+
+<script lang="ts">
+import { useStore } from "vuex";
+import { ref, onMounted } from "vue";
+import router from "../router";
+
+export default {
+  setup() {
+    const store = useStore();
+    onMounted(() => {
+      store.commit("updateRoom", router.currentRoute.value.params.id);
+    });
+
+    return { store };
+  }
+};
+</script>

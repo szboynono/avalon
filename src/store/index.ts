@@ -14,7 +14,17 @@ const mutations = {
   }
 }
 
+const getters = {
+  name(state: any) {
+    return state.name
+  },
+  room(state: any) {
+    return state.room
+  }
+}
+
 export default createStore({
   state,
-  mutations
+  mutations,
+  getters
 })
