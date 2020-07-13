@@ -11,6 +11,7 @@ import { defineComponent, ref, onMounted } from "vue";
 import ButtonGroup from "@/components/ButtonGroup.vue";
 import router from "../router";
 import axios from "axios";
+import { useStore } from 'vuex';
 
 export default defineComponent({
   components: {
@@ -18,13 +19,13 @@ export default defineComponent({
   },
   setup() {
     const nameInput = ref("");
-    const room = ref("");
+    const store = useStore();
     onMounted(() => {
       axios
         .get("http://localhost:8081/room")
         .then(res => {
           if (res.data) {
-            room.value = res.data;
+            store.commit('updateRoom', res.data)
           }
         })
         .catch(err => {
@@ -33,9 +34,10 @@ export default defineComponent({
     });
 
     function onContinueClick() {
-      router.push("/room/" + room.value);
+      store.commit('updateName', nameInput.value);
+      router.push("/room/" + store.state.room);
     }
-    return { onContinueClick, nameInput, room };
+    return { onContinueClick, nameInput };
   }
 });
 </script>
