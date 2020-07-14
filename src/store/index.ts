@@ -2,15 +2,21 @@ import { createStore } from 'vuex';
 
 const state = {
   name: '',
-  room: ''
+  room: '',
+  socket: undefined,
+  id: undefined
 }
 
 const mutations = {
   updateName(state: any, name: string) {
-    state.name = name;
+      state.name = name;
   },
   updateRoom(state: any, room: string) {
-    state.room = room;
+    
+      state.room = room;
+  },
+  updateSocket(state: any, socket: any) {
+    state.socket = socket;
   }
 }
 
@@ -20,6 +26,9 @@ const getters = {
   },
   room(state: any) {
     return state.room
+  },
+  socket(state: any) {
+    return state.socket
   }
 }
 
