@@ -15,6 +15,9 @@ export default {
     const store = useStore();
     onMounted(() => {
       store.commit("updateRoom", router.currentRoute.value.params.id);
+      if(!store.getters.name) {
+        router.push("/name");
+      }
     });
 
     return { store };
