@@ -47,6 +47,7 @@ export default ({
 
 <style lang="scss" scoped>
 .name {
+  margin-top: 8rem;
   & input {
     margin: 1rem auto;
     max-width: 300px;
