@@ -10,6 +10,7 @@ const state = {
 
 const mutations = {
   updateName(state: any, name: string) { 
+      localStorage.setItem('name', name);
       state.name = name;
   },
   updateRoom(state: any, room: string) {

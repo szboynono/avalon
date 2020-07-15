@@ -23,9 +23,14 @@ export default {
     const players = [{id: '1', name: 'a'}, {id: '2', name: 'b'}]
     onMounted(() => {
       store.commit("updateRoom", router.currentRoute.value.params.id);
+      if(localStorage.getItem('name')) {
+        store.commit("updateName", localStorage.getItem('name'));
+      }
+
       if (!store.getters.name) {
         router.push("/name");
       }
+      
       if(store.getters.room && store.getters.name) {
         const socket = io("http://localhost:8081/" + store.getters.room);
         store.commit('updateSocket', socket);
