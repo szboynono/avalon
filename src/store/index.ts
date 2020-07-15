@@ -4,19 +4,21 @@ const state = {
   name: '',
   room: '',
   socket: undefined,
-  id: undefined
+  id: ''
 }
 
 const mutations = {
-  updateName(state: any, name: string) {
+  updateName(state: any, name: string) { 
       state.name = name;
   },
   updateRoom(state: any, room: string) {
-    
       state.room = room;
   },
   updateSocket(state: any, socket: any) {
     state.socket = socket;
+  },
+  updateId(state: any, id: string) {
+    state.id = id 
   }
 }
 
@@ -29,6 +31,9 @@ const getters = {
   },
   socket(state: any) {
     return state.socket
+  },
+  id(state: any) {
+    return state.id
   }
 }
 

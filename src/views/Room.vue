@@ -27,7 +27,15 @@ export default {
         router.push("/name");
       }
       if(store.getters.room && store.getters.name) {
-        store.commit('updateSocket', io("http://localhost:8081/" + store.getters.room));
+        const socket = io("http://localhost:8081/" + store.getters.room);
+        store.commit('updateSocket', socket);
+        socket.emit('name', store.getters.name);
+        socket.on('id', (id: any) => {
+          store.commit('updateId', id);
+        });
+        socket.on('userList', (users: any) => {
+          console.log(users);
+        })
       }
     });
 
