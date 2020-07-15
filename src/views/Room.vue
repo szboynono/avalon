@@ -2,7 +2,7 @@
   <div>
     <h1>Room: {{store.getters.room}}</h1>
     <h2>Name: {{store.getters.name}}</h2>
-    <play-list :players="players"/>
+    <play-list :players="store.getters.players"/>
   </div>
 </template>
 
@@ -33,8 +33,8 @@ export default {
         socket.on('id', (id: any) => {
           store.commit('updateId', id);
         });
-        socket.on('userList', (users: any) => {
-          console.log(users);
+        socket.on('userList', (users: string[]) => {
+          store.commit('updatePlayers', users);
         })
       }
     });

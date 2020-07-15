@@ -4,7 +4,8 @@ const state = {
   name: '',
   room: '',
   socket: undefined,
-  id: ''
+  id: '',
+  players: [],
 }
 
 const mutations = {
@@ -19,6 +20,9 @@ const mutations = {
   },
   updateId(state: any, id: string) {
     state.id = id 
+  },
+  updatePlayers(state: any, players: any[]) {
+    state.players = players 
   }
 }
 
@@ -34,6 +38,9 @@ const getters = {
   },
   id(state: any) {
     return state.id
+  },
+  players(state: any) {
+    return state.players
   }
 }
 

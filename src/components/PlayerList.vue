@@ -1,6 +1,6 @@
 <template>
   <ul class="list-group">
-    <li v-for="player in players" :key="player.id" class="list-group-item">{{ player.name }}</li>
+    <li v-for="player in players" :key="player" class="list-group-item">{{ player }}</li>
   </ul>
 </template>
 
