@@ -19,6 +19,11 @@ const routes: Array<any> = [
     path: '/room/:id',
     name: 'Room',
     component: () => import('../views/Room.vue')
+  },
+  {
+    path: '/game/:id',
+    name: 'Game',
+    component: () => import('../views/Game.vue')
   }
 ]
 

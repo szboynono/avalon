@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import io from 'socket.io-client';
 
 const state = {
   name: '',
@@ -16,8 +17,9 @@ const mutations = {
   updateRoom(state: any, room: string) {
       state.room = room;
   },
-  updateSocket(state: any, socket: any) {
-    state.socket = socket;
+  updateSocket(state: any) {
+    console.log("socket");
+    state.socket = io("http://localhost:8081/" + state.room);
   },
   updateId(state: any, id: string) {
     state.id = id 
