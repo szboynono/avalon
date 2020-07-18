@@ -2,28 +2,29 @@
   <div>
     <h1>Room: {{store.getters.room}}</h1>
     <h2>Name: {{store.getters.name}}</h2>
-    <play-list :players="store.getters.players"/>
-    <button-group v-if="owner" :primaryText="'Start Game'" :primaryFn="onStart"/>
+    <v-list :items="store.getters.players"/>
+    <v-buttons v-if="owner" :primaryText="'Start Game'" :primaryFn="onStart"/>
   </div>
 </template>
 
 <script lang="ts">
-import PlayList from '@/components/PlayerList.vue';
+import VList from '@/components/VList.vue';
 import { useStore } from "vuex";
 import { ref, onMounted } from "vue";
 import router from "../router";
 import axios from "axios";
-import ButtonGroup from '@/components/ButtonGroup.vue';
+import VButtons from '@/components/VButtons.vue';
 
 export default {
   components: {
-    PlayList,
-    ButtonGroup
+    VList,
+    VButtons
   }, 
   setup() {
     const store = useStore();
     const owner = ref(false);
-    onMounted(() => {
+
+    const setGameInfo = () => {
       store.commit("updateRoom", router.currentRoute.value.params.id);
       if(localStorage.getItem('name')) {
         store.commit("updateName", localStorage.getItem('name'));
@@ -34,7 +35,7 @@ export default {
       } else {
         store.commit('updateSocket');
       }
-      
+
       if(store.getters.room && store.getters.name && store.getters.socket) {
         const socket = store.getters.socket;
         socket.emit('name', store.getters.name);
@@ -53,9 +54,13 @@ export default {
           router.push('/game/' + store.getters.room)
         })
       }
+    }
+
+    onMounted(() => {
+      setGameInfo();
     });
 
-    function onStart() {
+    const onStart = () => {
       store.getters.socket.emit('start');
     }
     

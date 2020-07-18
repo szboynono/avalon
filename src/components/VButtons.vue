@@ -1,5 +1,5 @@
 <template>
-  <div class="button-group">
+  <div class="v-buttons">
     <button @click="primaryFn" class="btn btn-lg btn-primary mt-3">{{ primaryText }}</button>
     <button v-if="secondaryText" @click="secondaryFn" class="btn btn-lg btn-primary mt-3">{{ secondaryText }}</button>
   </div>
@@ -13,7 +13,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-  .button-group {
+  .v-buttons {
     display: flex;
     flex-direction: column;
     margin: 1rem auto;

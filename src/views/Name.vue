@@ -2,20 +2,20 @@
   <div class="name">
     <h1>What is your name ?</h1>
     <input v-model="nameInput" type="text" class="form-control" placeholder="WHO ARE YOU ?" />
-    <button-group :primaryText="'Continue'" :primaryFn="onContinueClick" />
+    <v-buttons :primaryText="'Continue'" :primaryFn="onContinueClick" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import ButtonGroup from "@/components/ButtonGroup.vue";
+import VButtons from "@/components/VButtons.vue";
 import router from "../router";
 import axios from "axios";
 import { useStore } from 'vuex';
 
 export default ({
   components: {
-    ButtonGroup
+    VButtons
   },
   setup() {
     const nameInput = ref("");

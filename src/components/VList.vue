@@ -1,13 +1,13 @@
 <template>
   <ul class="list-group">
-    <li v-for="player in players" :key="player" class="list-group-item">{{ player }}</li>
+    <li v-for="item in items" :key="item" class="list-group-item">{{ item }}</li>
   </ul>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 export default defineComponent({
-  props: ["players"]
+  props: ["items"]
 });
 </script>
 

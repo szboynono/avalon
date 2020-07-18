@@ -18,7 +18,6 @@ const mutations = {
       state.room = room;
   },
   updateSocket(state: any) {
-    console.log("socket");
     state.socket = io("http://localhost:8081/" + state.room);
   },
   updateId(state: any, id: string) {
