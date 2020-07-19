@@ -56,7 +56,7 @@ export default {
           }
         });
         socket.on("started", () => {
-          router.push("/game/" + store.getters.room);
+          router.push("/role-reveal/" + store.getters.room);
         });
       }
     };
