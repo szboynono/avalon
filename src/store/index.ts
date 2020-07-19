@@ -7,6 +7,7 @@ const state = {
   socket: undefined,
   id: '',
   players: [],
+  role: [],
 }
 
 const mutations = {
@@ -25,6 +26,9 @@ const mutations = {
   },
   updatePlayers(state: any, players: any[]) {
     state.players = players 
+  },
+  updateRole(state: any, role: string) {
+    state.role = role;
   }
 }
 
@@ -43,6 +47,9 @@ const getters = {
   },
   players(state: any) {
     return state.players
+  },
+  role(state: any) {
+    return state.role
   }
 }
 

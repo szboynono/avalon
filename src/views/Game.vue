@@ -1,11 +1,12 @@
 <template>
 <div>
-  <h1>Game</h1>
-  <v-buttons :primaryText="'What is my role'" :primaryFn="onGetRoleClick"/>
+  <h1>Click the button to reveal you role</h1>
+  <h2 v-if="isRoleRevealed">{{store.getters.role}}</h2>
+  <v-buttons :primaryText="buttonText" :primaryFn="onGetRoleClick"/>
 </div>
 </template>
 <script lang="ts">
-import { onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 import VButtons from "@/components/VButtons.vue";
 import router from "../router";
@@ -20,16 +21,29 @@ export default {
   },
   setup() {
     const store = useStore();
+    const isRoleRevealed = ref(false);
+    const buttonText = ref('Reveal Myself');
+
     onMounted(() => {
-      store.getters.socket.on('giveRole', (role: any) => {
-        console.log(role);
+      store.getters.socket.on('giveRole', (role: string) => {
+        store.commit('updateRole', role);
       })
     });
 
-    function onGetRoleClick() {
+    watch(isRoleRevealed, () => {
+      if(isRoleRevealed.value) {
+        buttonText.value = 'Continue';
+      }
+    });
+
+    const onGetRoleClick = () => {
+      if(isRoleRevealed.value) {
+        console.log('h');
+      }
+      isRoleRevealed.value = true;
       store.getters.socket.emit('requestRole');
     }
-    return {store, onGetRoleClick}
+    return {store, onGetRoleClick, isRoleRevealed, buttonText}
   }
 };
 </script>
