@@ -42,6 +42,9 @@ export default {
       store.getters.socket.on("giveRole", (role: string) => {
         store.commit("updateRole", role);
       });
+      store.getters.socket.on("readyCheckDone", () => {
+        console.log('ready lalal');
+      });
     });
 
     watch(isRoleRevealed, () => {
@@ -59,6 +62,7 @@ export default {
     const onRoleClick = () => {
       if (isRoleRevealed.value) {
         isPlayerReady.value = true;
+        store.getters.socket.emit('ready');
       }
       isRoleRevealed.value = true;
       store.getters.socket.emit("requestRole");
