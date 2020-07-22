@@ -12,7 +12,7 @@ import router from "../router";
 
 export default {
   components: {
-    VButtons
+    VButtons,
   },
   setup() {
     function onStart() {
