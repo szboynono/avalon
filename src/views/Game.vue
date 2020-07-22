@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-missions :round="round" />
-    <h1>{{currentLeader}} the leader</h1>
+    <h1>{{currentLeaderText}} the leader</h1>
     <v-list :items="store.getters.players" :leader="leaderName"/>
     <button class="btn btn-primary" @click="onNextClick">next</button>
   </div>
