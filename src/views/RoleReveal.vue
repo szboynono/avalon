@@ -43,7 +43,7 @@ export default {
         store.commit("updateRole", role);
       });
       store.getters.socket.on("readyCheckDone", () => {
-        console.log('ready lalal');
+        router.push("/game/" + store.getters.room);
       });
     });
 
