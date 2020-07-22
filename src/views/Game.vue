@@ -2,6 +2,7 @@
   <div>
     <v-missions :round="round" />
     <h1>{{currentLeader}} the leader</h1>
+    <v-list :items="store.getters.players" :leader="leaderName"/>
     <button class="btn btn-primary" @click="onNextClick">next</button>
   </div>
 </template>
@@ -10,17 +11,19 @@
 import { onMounted, ref, computed } from "vue";
 import { useStore } from "vuex";
 import VMissions from "@/components/VMissions.vue";
+import VList from "@/components/VList.vue";
 
 export default {
   components: {
-    VMissions
+    VMissions,
+    VList
   },
   setup() {
     const store = useStore();
     const round = ref(0);
     const leaderName = ref("");
 
-    const currentLeader = computed(() =>
+    const currentLeaderText = computed(() =>
       leaderName.value === store.getters.name
         ? "You are"
         : `${leaderName.value} is`
@@ -36,7 +39,7 @@ export default {
       });
       store.getters.socket.emit("askForFirstLeader");
     });
-    return { onNextClick, round, currentLeader };
+    return { onNextClick, round, currentLeaderText, store, leaderName };
   }
 };
 </script>
