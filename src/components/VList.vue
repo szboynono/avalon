@@ -13,8 +13,8 @@
           v-for="(item, i) in items"
           :key="item"
           @click="onListClicked(i)"
-          :class="{'active': item.selected}"
-          class="list-group-item clickable-list noselect"
+          :class="[{'active': item.selected}, {'clickable-list': isLeader}]"
+          class="list-group-item noselect"
         >
           {{ item.name }}
           <span class="chip bg-danger text-white" v-if="leader === item.name">Leader</span>
@@ -27,13 +27,18 @@
 
 <script lang="ts">
 import { defineComponent, computed, onMounted, ref } from "vue";
+import { useStore } from 'vuex';
 export default defineComponent({
   props: ["items", "leader"],
   setup(props, ctx) {
+    const store = useStore();
+    const isLeader = computed(() => props.leader === store.getters.name);
     const onListClicked = (i: number) => {
-      ctx.emit('list-clicked', i);
+      if(isLeader.value) {
+        ctx.emit('list-clicked', i);
+      }
     };
-    return { onListClicked };
+    return { onListClicked, isLeader };
   }
 });
 </script>
@@ -52,7 +57,12 @@ export default defineComponent({
   border-radius: 16px;
 }
 .clickable-list {
+  transition-duration: .3s;
   cursor: pointer;
+}
+
+.clickable-list:hover {
+  background-color: #007bff;
 }
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */

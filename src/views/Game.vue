@@ -2,8 +2,8 @@
   <div>
     <v-missions :round="round" />
     <h1>{{currentLeaderText}} the leader</h1>
-    <p>{{manRequired}}</p>
-    <v-list :items="mappedItems" :leader="leaderName" @list-clicked="updateMappedItems"/>
+    <p v-if="computeHowManyMoreManRequired > 0">We still need {{computeHowManyMoreManRequired}} more.</p>
+    <v-list :items="mappedItems" :leader="leaderName" @list-clicked="updateMappedItems" />
     <button class="btn btn-primary" @click="onNextClick">next</button>
   </div>
 </template>
@@ -21,13 +21,15 @@ export default {
   },
   setup() {
     const store = useStore();
-    const round = ref(0);
+    const round = ref(-1);
     const manRequired = ref(0);
     const leaderName = ref("");
-    const mappedItems = ref(store.getters.players.map((player: any) => ({
-      ...player,
-      selected: false
-    })));
+    const mappedItems = ref(
+      store.getters.players.map((player: any) => ({
+        ...player,
+        selected: false
+      }))
+    );
 
     const currentLeaderText = computed(() =>
       leaderName.value === store.getters.name
@@ -36,29 +38,47 @@ export default {
     );
 
     const updateMappedItems = (index: any) => {
-      mappedItems.value[index].selected = !mappedItems.value[index].selected
-    }
+      mappedItems.value[index].selected = !mappedItems.value[index].selected;
+      store.getters.socket.emit('updateSelections', mappedItems.value);
+    };
 
     const onNextClick = () => {
       store.getters.socket.emit("turnOver");
     };
 
+    const computeHowManyMoreManRequired = computed(
+      () =>
+        manRequired.value -
+        mappedItems.value.filter((item: any) => item.selected === true).length
+    );
     watch(round, () => {
-      console.log(round.value);
-      if(round.value === 0 || round.value === 2) {
+      if (round.value === 0 || round.value === 2) {
         manRequired.value = 2;
       } else {
         manRequired.value = 3;
       }
     });
+
     onMounted(() => {
       store.getters.socket.on("roundInfo", (roundInfo: any) => {
         leaderName.value = roundInfo.leader;
         round.value = roundInfo.round;
       });
       store.getters.socket.emit("askForFirstLeader");
+      store.getters.socket.on("afterUpdateSelection", (selections: any) => {
+        mappedItems.value = selections;
+      });
     });
-    return { onNextClick, round, currentLeaderText, store, leaderName, updateMappedItems, mappedItems, manRequired };
+    return {
+      onNextClick,
+      round,
+      currentLeaderText,
+      store,
+      leaderName,
+      updateMappedItems,
+      mappedItems,
+      computeHowManyMoreManRequired
+    };
   }
 };
 </script>
