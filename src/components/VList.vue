@@ -2,9 +2,8 @@
   <div>
     <template v-if="!leader">
       <ul class="list-group">
-        <li v-for="item in items" :key="item" class="list-group-item">
-          {{ item }}
-          <!-- <span class="chip bg-primary text-white" v-if="leader === item">Leader</span> -->
+        <li v-for="item in items" :key="item.name" class="list-group-item">
+          {{ item.name }}
         </li>
       </ul>
     </template>
@@ -18,7 +17,7 @@
           class="list-group-item clickable-list noselect"
         >
           {{ item.name }}
-          <span class="chip bg-primary text-white" v-if="leader === item">Leader</span>
+          <span class="chip bg-danger text-white" v-if="leader === item.name">Leader</span>
         </li>
       </ul>
     </template>
@@ -48,7 +47,7 @@ export default defineComponent({
   display: inline-block;
   position: absolute;
   right: 16px;
-  top: 10px;
+  top: 8px;
   padding: 4px 10px;
   border-radius: 16px;
 }
