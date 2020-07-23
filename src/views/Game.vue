@@ -2,7 +2,7 @@
   <div>
     <v-missions :round="round" />
     <h1>{{currentLeaderText}} the leader</h1>
-    <v-list :items="store.getters.players" :leader="leaderName"/>
+    <v-list :items="mappedItems" :leader="leaderName" @list-clicked="updateMappedItems"/>
     <button class="btn btn-primary" @click="onNextClick">next</button>
   </div>
 </template>
@@ -22,12 +22,20 @@ export default {
     const store = useStore();
     const round = ref(0);
     const leaderName = ref("");
+    const mappedItems = ref(store.getters.players.map((player: string) => ({
+      name: player,
+      selected: false
+    })))
 
     const currentLeaderText = computed(() =>
       leaderName.value === store.getters.name
         ? "You are"
         : `${leaderName.value} is`
     );
+
+    const updateMappedItems = (index: any) => {
+      mappedItems.value[index].selected = !mappedItems.value[index].selected
+    }
 
     const onNextClick = () => {
       store.getters.socket.emit("turnOver");
@@ -39,7 +47,7 @@ export default {
       });
       store.getters.socket.emit("askForFirstLeader");
     });
-    return { onNextClick, round, currentLeaderText, store, leaderName };
+    return { onNextClick, round, currentLeaderText, store, leaderName, updateMappedItems, mappedItems };
   }
 };
 </script>

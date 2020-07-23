@@ -11,10 +11,10 @@
     <template v-else>
       <ul class="list-group">
         <li
-          v-for="(item, i) in mappedItems"
+          v-for="(item, i) in items"
           :key="item"
           @click="onListClicked(i)"
-          :class="{'active': item.active}"
+          :class="{'active': item.selected}"
           class="list-group-item clickable-list noselect"
         >
           {{ item.name }}
@@ -30,20 +30,11 @@
 import { defineComponent, computed, onMounted, ref } from "vue";
 export default defineComponent({
   props: ["items", "leader"],
-  setup(props) {
-    const mappedItems = ref(
-      props.items.map((item: any) => {
-        return {
-          name: item,
-          active: false
-        };
-      })
-    );
-
+  setup(props, ctx) {
     const onListClicked = (i: number) => {
-      mappedItems.value[i].active = !mappedItems.value[i].active;
+      ctx.emit('list-clicked', i);
     };
-    return { onListClicked, mappedItems };
+    return { onListClicked };
   }
 });
 </script>
