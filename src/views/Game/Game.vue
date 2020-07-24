@@ -2,9 +2,15 @@
   <div>
     <v-missions :round="round" />
     <h1>{{currentLeaderText}} the leader</h1>
-    <p v-if="computeHowManyMoreManRequired > 0">We still need {{computeHowManyMoreManRequired}} more.</p>
+    <router-view></router-view>
+    <div>
+      <p
+        v-if="computeHowManyMoreManRequired > 0"
+      >We still need {{computeHowManyMoreManRequired}} more.</p>
+      <p v-else>All Set!</p>
+    </div>
     <v-list :items="mappedItems" :leader="leaderName" @list-clicked="updateMappedItems" />
-    <button class="btn btn-primary" @click="onNextClick">next</button>
+    <v-buttons v-if="computeHowManyMoreManRequired <= 0" :primary-text="'Go'" :primaryFn="onGoClick" />
   </div>
 </template>
 
@@ -13,11 +19,13 @@ import { onMounted, ref, computed, watch } from "vue";
 import { useStore } from "vuex";
 import VMissions from "@/components/VMissions.vue";
 import VList from "@/components/VList.vue";
+import VButtons from "@/components/VButtons.vue";
 
 export default {
   components: {
     VMissions,
-    VList
+    VList,
+    VButtons,
   },
   setup() {
     const store = useStore();
@@ -27,7 +35,7 @@ export default {
     const mappedItems = ref(
       store.getters.players.map((player: any) => ({
         ...player,
-        selected: false
+        selected: false,
       }))
     );
 
@@ -39,10 +47,10 @@ export default {
 
     const updateMappedItems = (index: any) => {
       mappedItems.value[index].selected = !mappedItems.value[index].selected;
-      store.getters.socket.emit('updateSelections', mappedItems.value);
+      store.getters.socket.emit("updateSelections", mappedItems.value);
     };
 
-    const onNextClick = () => {
+    const onGoClick = () => {
       store.getters.socket.emit("turnOver");
     };
 
@@ -70,15 +78,15 @@ export default {
       });
     });
     return {
-      onNextClick,
+      onGoClick,
       round,
       currentLeaderText,
       store,
       leaderName,
       updateMappedItems,
       mappedItems,
-      computeHowManyMoreManRequired
+      computeHowManyMoreManRequired,
     };
-  }
+  },
 };
 </script>
