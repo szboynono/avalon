@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-missions :round="round" />
+    <v-missions :round="store.getters.round" />
     <h1>{{currentLeaderText}} the leader</h1>
     <router-view></router-view>
     <div>
@@ -10,7 +10,11 @@
       <p v-else>All Set!</p>
     </div>
     <v-list :items="mappedItems" :leader="store.getters.leader" @list-clicked="updateMappedItems" />
-    <v-buttons v-if="computeHowManyMoreManRequired <= 0" :primary-text="'Go'" :primaryFn="onGoClick" />
+    <v-buttons
+      v-if="computeHowManyMoreManRequired <= 0"
+      :primary-text="'Go'"
+      :primaryFn="onGoClick"
+    />
   </div>
 </template>
 
@@ -29,7 +33,6 @@ export default {
   },
   setup() {
     const store = useStore();
-    const round = ref(-1);
     const manRequired = ref(0);
     const mappedItems = ref(
       store.getters.players.map((player: any) => ({
@@ -58,18 +61,16 @@ export default {
         manRequired.value -
         mappedItems.value.filter((item: any) => item.selected === true).length
     );
-    watch(round, () => {
-      if (round.value === 0 || round.value === 2) {
-        manRequired.value = 2;
-      } else {
-        manRequired.value = 3;
-      }
-    });
 
     onMounted(() => {
       store.getters.socket.on("roundInfo", (roundInfo: any) => {
-        store.commit('updateLeader', roundInfo.leader)
-        round.value = roundInfo.round;
+        store.commit("updateLeader", roundInfo.leader);
+        store.commit("updateRound", roundInfo.round);
+        if (roundInfo.round === 0 || roundInfo.round === 2) {
+          manRequired.value = 2;
+        } else {
+          manRequired.value = 3;
+        }
       });
       store.getters.socket.emit("askForFirstLeader");
       store.getters.socket.on("afterUpdateSelection", (selections: any) => {
@@ -78,7 +79,6 @@ export default {
     });
     return {
       onGoClick,
-      round,
       currentLeaderText,
       store,
       updateMappedItems,
