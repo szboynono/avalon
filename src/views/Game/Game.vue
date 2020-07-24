@@ -9,7 +9,7 @@
       >We still need {{computeHowManyMoreManRequired}} more.</p>
       <p v-else>All Set!</p>
     </div>
-    <v-list :items="mappedItems" :leader="leaderName" @list-clicked="updateMappedItems" />
+    <v-list :items="mappedItems" :leader="store.getters.leader" @list-clicked="updateMappedItems" />
     <v-buttons v-if="computeHowManyMoreManRequired <= 0" :primary-text="'Go'" :primaryFn="onGoClick" />
   </div>
 </template>
@@ -31,7 +31,6 @@ export default {
     const store = useStore();
     const round = ref(-1);
     const manRequired = ref(0);
-    const leaderName = ref("");
     const mappedItems = ref(
       store.getters.players.map((player: any) => ({
         ...player,
@@ -40,9 +39,9 @@ export default {
     );
 
     const currentLeaderText = computed(() =>
-      leaderName.value === store.getters.name
+      store.getters.leader === store.getters.name
         ? "You are"
-        : `${leaderName.value} is`
+        : `${store.getters.leader} is`
     );
 
     const updateMappedItems = (index: any) => {
@@ -69,7 +68,7 @@ export default {
 
     onMounted(() => {
       store.getters.socket.on("roundInfo", (roundInfo: any) => {
-        leaderName.value = roundInfo.leader;
+        store.commit('updateLeader', roundInfo.leader)
         round.value = roundInfo.round;
       });
       store.getters.socket.emit("askForFirstLeader");
@@ -82,7 +81,6 @@ export default {
       round,
       currentLeaderText,
       store,
-      leaderName,
       updateMappedItems,
       mappedItems,
       computeHowManyMoreManRequired,
