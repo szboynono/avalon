@@ -43,7 +43,7 @@ export default {
         store.commit("updateRole", role);
       });
       store.getters.socket.on("readyCheckDone", () => {
-        router.push("/game/" + store.getters.room);
+        router.push("/game/" + store.getters.room + "/assign-mission");
       });
     });
 

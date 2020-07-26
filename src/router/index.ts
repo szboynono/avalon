@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../views/Home.vue'
+import Home from '../views/Home.vue';
+import AssignMission from '../views/Game/AssignMission.vue';
 
 const routes: Array<any> = [
   {
@@ -28,7 +29,13 @@ const routes: Array<any> = [
   {
     path: '/game/:id',
     name: 'Game',
-    component: () => import('../views/Game/Game.vue')
+    component: () => import('../views/Game/Game.vue'),
+    children: [
+      {
+        path: 'assign-mission',
+        component: AssignMission
+      }
+    ]
   }
 ]
 
