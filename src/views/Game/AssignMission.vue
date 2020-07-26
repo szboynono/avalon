@@ -6,7 +6,6 @@
     </div>
     <v-list :items="mappedItems" :leader="store.getters.leader" @list-clicked="updateMappedItems" />
     <v-buttons
-      v-if="computeHowManyMoreManRequired <= 0"
       :primary-text="'Go'"
       :primaryFn="onGoClick"
     />
@@ -17,6 +16,7 @@ import VList from "@/components/VList.vue";
 import VButtons from "@/components/VButtons.vue";
 import { useStore } from "vuex";
 import { ref, onMounted, computed, watch, watchEffect } from "vue";
+import router from '../../router';
 
 export default {
   components: {
@@ -40,7 +40,7 @@ export default {
     };
 
     const onGoClick = () => {
-      store.getters.socket.emit("turnOver");
+      router.push('approve-mission');
     };
 
     const computeHowManyMoreManRequired = computed(() => {
