@@ -1,10 +1,8 @@
 <template>
   <div>
     <div>
-      <p
-        v-if="computeHowManyMoreManRequired > 0"
-      >We still need {{computeHowManyMoreManRequired}} more.</p>
-      <p v-else>All Set!</p>
+      <p v-if="computeHowManyMoreManRequired > 0">We still need {{computeHowManyMoreManRequired}} more.</p>
+      <p v-else>We still need {{computeHowManyMoreManRequired}} more.</p>
     </div>
     <v-list :items="mappedItems" :leader="store.getters.leader" @list-clicked="updateMappedItems" />
     <v-buttons
@@ -18,7 +16,7 @@
 import VList from "@/components/VList.vue";
 import VButtons from "@/components/VButtons.vue";
 import { useStore } from "vuex";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch, watchEffect } from "vue";
 
 export default {
   components: {
@@ -27,13 +25,13 @@ export default {
   },
   setup() {
     const store = useStore();
-    const manRequired = ref(0);
     const mappedItems = ref(
       store.getters.players.map((player: any) => ({
         ...player,
         selected: false,
       }))
     );
+    const manRequired = ref(0);
 
     const updateMappedItems = (index: any) => {
       mappedItems.value[index].selected = !mappedItems.value[index].selected;
@@ -45,10 +43,17 @@ export default {
       store.getters.socket.emit("turnOver");
     };
 
-    const computeHowManyMoreManRequired = computed(
-      () =>
+    const computeHowManyMoreManRequired = computed(() => {
+      return (
         manRequired.value -
         mappedItems.value.filter((item: any) => item.selected === true).length
+      );
+    });
+
+    watchEffect(
+      () =>
+        (manRequired.value =
+          store.getters.round === 0 || store.getters.round === 2 ? 2 : 3)
     );
 
     onMounted(() => {
