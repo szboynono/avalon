@@ -40,7 +40,7 @@ export default {
     };
 
     const onGoClick = () => {
-      router.push('approve-mission');
+      store.getters.socket.emit('readyToVote');
     };
 
     const computeHowManyMoreManRequired = computed(() => {
@@ -58,8 +58,11 @@ export default {
 
     onMounted(() => {
       store.commit("updatePlayers", mappedItems.value);
-      store.getters.socket.on("afterUpdateSelection", (selections: any) => {
-        mappedItems.value = selections;
+      store.getters.socket.on("userList", (users: any) => {
+        mappedItems.value = users;
+      });
+      store.getters.socket.on("goToVote", () => {
+        router.push('approve-mission');
       });
     });
     return {

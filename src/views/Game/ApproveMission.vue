@@ -25,12 +25,13 @@ export default {
     const store = useStore();
     const selectedPlayer = ref([]);
     const onApproveClick = () => {
-      console.log('ap[prov');
+      store.getters.socket.emit('submitVote', true);
     }
     const onRejectClick = () => {
-      console.log('rekject');
+      store.getters.socket.emit('submitVote', false);
     }
     onMounted(() => {
+      console.log(store.getters.players);
       selectedPlayer.value = store.getters.players.filter(
         (player: any) => player.selected
       );
