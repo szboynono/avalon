@@ -31,10 +31,12 @@ export default {
       store.getters.socket.emit('submitVote', false);
     }
     onMounted(() => {
-      console.log(store.getters.players);
       selectedPlayer.value = store.getters.players.filter(
         (player: any) => player.selected
       );
+      store.getters.socket.on('approveResult', (result: boolean) => {
+        console.log(result);
+      });
     });
     return {
       store,
