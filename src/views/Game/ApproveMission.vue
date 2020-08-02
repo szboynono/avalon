@@ -1,27 +1,33 @@
 <template>
   <div>
     <template v-if="!voteResult">
-        <p>Should we send these people to the mission?</p>
-        <v-list :items="selectedPlayer" />
-        <v-buttons
-          :primaryText="'Approve'"
-          :primaryFn="onApproveClick"
-          :secondaryText="'Reject'"
-          :secondaryFn="onRejectClick"
-        />
+      <p>Should we send these people to the mission?</p>
+      <v-list :items="selectedPlayer" />
+      <v-buttons
+        :primaryText="'Approve'"
+        :primaryFn="onApproveClick"
+        :secondaryText="'Reject'"
+        :secondaryFn="onRejectClick"
+      />
     </template>
     <template v-else>
-        <p>The purpose was {{voteResult.result ? 'Approved': 'Rejected'}}</p>
-        <div class="row">
-          <div class="col-6">
-            <h4 class="text-success">FOR</h4>
-            <v-list :items="voteResult.approvals" />
-          </div>
-          <div class="col-6">
-            <h4 class="text-danger">AGAINST</h4>
-            <v-list :items="voteResult.rejections" />
-          </div>
+      <p>The purpose was {{voteResult.result ? 'Approved': 'Rejected'}}</p>
+      <div class="row">
+        <div class="col-6">
+          <h4 class="text-success">FOR</h4>
+          <v-list :items="voteResult.approvals" />
         </div>
+        <div class="col-6">
+          <h4 class="text-danger">AGAINST</h4>
+          <v-list :items="voteResult.rejections" />
+        </div>
+      </div>
+      <div class="border-top mt-4">
+        <p class="mt-3">The quest is underway</p>
+        <div class="mt-3">
+          <v-buttons :primaryText="'Success'" :secondaryText="'Failure'" />
+        </div>
+      </div>
     </template>
   </div>
 </template>
@@ -59,7 +65,7 @@ export default {
       selectedPlayer,
       onApproveClick,
       onRejectClick,
-      voteResult
+      voteResult,
     };
   },
 };
