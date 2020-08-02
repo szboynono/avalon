@@ -6,6 +6,7 @@
     </div>
     <v-list :items="mappedItems" :leader="store.getters.leader" @list-clicked="updateMappedItems" />
     <v-buttons
+      v-if="isLeader"
       :primary-text="'Go'"
       :primaryFn="onGoClick"
     />
@@ -50,6 +51,8 @@ export default {
       );
     });
 
+    const isLeader = computed(() => store.getters.leader === store.getters.name);
+
     watchEffect(
       () =>
         (manRequired.value =
@@ -71,6 +74,7 @@ export default {
       computeHowManyMoreManRequired,
       updateMappedItems,
       onGoClick,
+      isLeader
     };
   },
 };

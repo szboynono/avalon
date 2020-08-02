@@ -25,12 +25,24 @@
       <div class="border-top mt-4">
         <p class="mt-3">The quest is underway</p>
         <div class="mt-3" v-if="isSelected && voteResult.result">
-          <v-buttons :primaryText="'Success'" :secondaryText="'Failure'" />
+          <v-buttons
+            v-if="isBadGuy"
+            :primaryText="'Success'"
+            :primaryFn="onSuccessClick"
+            :secondaryText="'Failure'"
+            :secondaryFn="onFailureClick"
+          />
+          <v-buttons
+            v-else
+            :primaryText="'Success'"
+            :primaryFn="onSuccessClick"
+          />
         </div>
       </div>
     </template>
   </div>
 </template>
+
 <script lang="ts">
 import VList from "@/components/VList.vue";
 import VButtons from "@/components/VButtons.vue";
@@ -53,7 +65,19 @@ export default {
       store.getters.socket.emit("submitVote", false);
     };
 
-    const isSelected = computed(() => selectedPlayer.value.some((player: any) => player.id === store.getters.id));
+    const onSuccessClick = () => {
+      store.getters.socket.emit("submitMissonSuccessVote", true);
+    };
+
+    const onFailureClick = () => {
+      store.getters.socket.emit("submitMissonSuccessVote", false);
+    };
+
+    const isSelected = computed(() =>
+      selectedPlayer.value.some((player: any) => player.id === store.getters.id)
+    );
+
+    const isBadGuy = computed(() => ['Minion of Mordred', 'ASSASIN'].includes(store.getters.role));
     onMounted(() => {
       selectedPlayer.value = store.getters.players.filter(
         (player: any) => player.selected
@@ -61,6 +85,9 @@ export default {
       store.getters.socket.on("approveResult", (result: any) => {
         voteResult.value = result;
       });
+      store.getters.socket.on('missionSuccessResult', (result: any) => {
+        console.log(result);
+      })
     });
     return {
       store,
@@ -68,7 +95,10 @@ export default {
       onApproveClick,
       onRejectClick,
       voteResult,
-      isSelected
+      isSelected,
+      onSuccessClick,
+      onFailureClick,
+      isBadGuy
     };
   },
 };
