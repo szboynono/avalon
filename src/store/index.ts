@@ -10,6 +10,7 @@ const state = {
   role: [],
   leader: '',
   round: -1,
+  approveResult: {}
 }
 
 const mutations = {
@@ -37,6 +38,9 @@ const mutations = {
   },
   updateRound(state: any, round: number) {
     state.round = round;
+  },
+  updateApproveResult(state: any, approveResult: any) {
+    state.approveResult = approveResult;
   }
 }
 
@@ -64,6 +68,9 @@ const getters = {
   },
   round(state: any) {
     return state.round
+  },
+  approveResult(state: any) {
+    return state.approveResult
   }
 }
 

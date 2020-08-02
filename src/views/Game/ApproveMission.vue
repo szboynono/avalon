@@ -1,45 +1,13 @@
 <template>
   <div>
-    <template v-if="!voteResult">
-      <p>Should we send these people to the mission?</p>
-      <v-list :items="selectedPlayer" />
-      <v-buttons
-        :primaryText="'Approve'"
-        :primaryFn="onApproveClick"
-        :secondaryText="'Reject'"
-        :secondaryFn="onRejectClick"
-      />
-    </template>
-    <template v-else>
-      <p>The purpose was {{voteResult.result ? 'Approved': 'Rejected'}}</p>
-      <div class="row">
-        <div class="col-6">
-          <h4 class="text-success">FOR</h4>
-          <v-list :items="voteResult.approvals" />
-        </div>
-        <div class="col-6">
-          <h4 class="text-danger">AGAINST</h4>
-          <v-list :items="voteResult.rejections" />
-        </div>
-      </div>
-      <div class="border-top mt-4">
-        <p class="mt-3">The quest is underway</p>
-        <div class="mt-3" v-if="isSelected && voteResult.result">
-          <v-buttons
-            v-if="isBadGuy"
-            :primaryText="'Success'"
-            :primaryFn="onSuccessClick"
-            :secondaryText="'Failure'"
-            :secondaryFn="onFailureClick"
-          />
-          <v-buttons
-            v-else
-            :primaryText="'Success'"
-            :primaryFn="onSuccessClick"
-          />
-        </div>
-      </div>
-    </template>
+    <p>Should we send these people to the mission?</p>
+    <v-list :items="selectedPlayer" />
+    <v-buttons
+      :primaryText="'Approve'"
+      :primaryFn="onApproveClick"
+      :secondaryText="'Reject'"
+      :secondaryFn="onRejectClick"
+    />
   </div>
 </template>
 
@@ -48,6 +16,7 @@ import VList from "@/components/VList.vue";
 import VButtons from "@/components/VButtons.vue";
 import { useStore } from "vuex";
 import { ref, onMounted, computed } from "vue";
+import router from "../../router";
 
 export default {
   components: {
@@ -57,7 +26,6 @@ export default {
   setup() {
     const store = useStore();
     const selectedPlayer = ref([]);
-    const voteResult = ref();
     const onApproveClick = () => {
       store.getters.socket.emit("submitVote", true);
     };
@@ -65,40 +33,20 @@ export default {
       store.getters.socket.emit("submitVote", false);
     };
 
-    const onSuccessClick = () => {
-      store.getters.socket.emit("submitMissonSuccessVote", true);
-    };
-
-    const onFailureClick = () => {
-      store.getters.socket.emit("submitMissonSuccessVote", false);
-    };
-
-    const isSelected = computed(() =>
-      selectedPlayer.value.some((player: any) => player.id === store.getters.id)
-    );
-
-    const isBadGuy = computed(() => ['Minion of Mordred', 'ASSASIN'].includes(store.getters.role));
     onMounted(() => {
       selectedPlayer.value = store.getters.players.filter(
         (player: any) => player.selected
       );
       store.getters.socket.on("approveResult", (result: any) => {
-        voteResult.value = result;
+        store.commit("updateApproveResult", result);
+        router.push("go-for-mission");
       });
-      store.getters.socket.on('missionSuccessResult', (result: any) => {
-        console.log(result);
-      })
     });
     return {
       store,
       selectedPlayer,
       onApproveClick,
       onRejectClick,
-      voteResult,
-      isSelected,
-      onSuccessClick,
-      onFailureClick,
-      isBadGuy
     };
   },
 };

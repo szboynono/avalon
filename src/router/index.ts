@@ -38,6 +38,10 @@ const routes: Array<any> = [
         path: 'approve-mission',
         component: () => import('../views/Game/ApproveMission.vue'),
       },
+      {
+        path: 'go-for-mission',
+        component: () => import('../views/Game/GoForMission.vue'),
+      },
     ]
   }
 ]
