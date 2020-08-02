@@ -24,7 +24,7 @@
       </div>
       <div class="border-top mt-4">
         <p class="mt-3">The quest is underway</p>
-        <div class="mt-3">
+        <div class="mt-3" v-if="isSelected && voteResult.result">
           <v-buttons :primaryText="'Success'" :secondaryText="'Failure'" />
         </div>
       </div>
@@ -35,7 +35,7 @@
 import VList from "@/components/VList.vue";
 import VButtons from "@/components/VButtons.vue";
 import { useStore } from "vuex";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 
 export default {
   components: {
@@ -52,6 +52,8 @@ export default {
     const onRejectClick = () => {
       store.getters.socket.emit("submitVote", false);
     };
+
+    const isSelected = computed(() => selectedPlayer.value.some((player: any) => player.id === store.getters.id));
     onMounted(() => {
       selectedPlayer.value = store.getters.players.filter(
         (player: any) => player.selected
@@ -66,6 +68,7 @@ export default {
       onApproveClick,
       onRejectClick,
       voteResult,
+      isSelected
     };
   },
 };
