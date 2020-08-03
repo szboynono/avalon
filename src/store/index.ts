@@ -10,7 +10,8 @@ const state = {
   role: [],
   leader: '',
   round: -1,
-  approveResult: {}
+  approveResult: {},
+  missionSuccessResult: {}
 }
 
 const mutations = {
@@ -41,6 +42,9 @@ const mutations = {
   },
   updateApproveResult(state: any, approveResult: any) {
     state.approveResult = approveResult;
+  },
+  updateMissionSuccessResult(state: any, missionSuccessResult: any) {
+    state.missionSuccessResult = missionSuccessResult;
   }
 }
 
@@ -71,6 +75,9 @@ const getters = {
   },
   approveResult(state: any) {
     return state.approveResult
+  },
+  missionSuccessResult(state: any) {
+    return state.missionSuccessResult
   }
 }
 

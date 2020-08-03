@@ -36,6 +36,7 @@ import VList from "@/components/VList.vue";
 import VButtons from "@/components/VButtons.vue";
 import { useStore } from "vuex";
 import { ref, onMounted, computed } from "vue";
+import router from '../../router';
 
 export default {
   components: {
@@ -66,7 +67,8 @@ export default {
         (player: any) => player.selected
       );
       store.getters.socket.on("missionSuccessResult", (result: any) => {
-        console.log(result);
+        store.commit('updateMissionSuccessResult', result);
+        router.push('mission-result-reveal');
       });
     });
     return {

@@ -42,6 +42,10 @@ const routes: Array<any> = [
         path: 'go-for-mission',
         component: () => import('../views/Game/GoForMission.vue'),
       },
+      {
+        path: 'mission-result-reveal',
+        component: () => import('../views/Game/MissionResultReveal.vue'),
+      },
     ]
   }
 ]
