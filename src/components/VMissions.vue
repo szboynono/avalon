@@ -1,29 +1,45 @@
 <template>
   <div>
-    <div class="mission border rounded" :class="round === 0 ? activeClasses: null">2</div>
-    <div class="mission border rounded" :class="round === 1 ? activeClasses: null">3</div>
-    <div class="mission border rounded" :class="round === 2 ? activeClasses: null">2</div>
-    <div class="mission border rounded" :class="round === 3 ? activeClasses: null">3</div>
-    <div class="mission border rounded" :class="round === 4 ? activeClasses: null">3</div>
+    <div class="mission border rounded" :class="createClass(0)">2</div>
+    <div class="mission border rounded" :class="createClass(1)">3</div>
+    <div class="mission border rounded" :class="createClass(2)">2</div>
+    <div class="mission border rounded" :class="createClass(3)">3</div>
+    <div class="mission border rounded" :class="createClass(4)">3</div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 export default defineComponent({
-  props: ['round'],
-  setup() {
-    const activeClasses = 'border-primary'
-    return {activeClasses}
-  }
+  props: ["round", "gameResult"],
+  setup(props) {
+    const activeClasses = "border-primary";
+    const successClasses = "bg-success text-white";
+    const failureClasses = "bg-danger text-white";
+    const createClass = (round: number) => {
+      const outputClasses = [];
+      if(round === props.round) {
+        outputClasses.push(activeClasses);
+      }
+      if(props.gameResult) {
+        if(props.gameResult[round] === true) {
+          outputClasses.push(successClasses);
+        } else if(props.gameResult[round] === false) {
+          outputClasses.push(failureClasses);
+        }
+      }
+      return outputClasses.join(' ');
+    }
+    return { createClass };
+  },
 });
 </script>
 
 <style lang="scss" scoped>
-  .mission {
-    font-size: 20px;
-    display: inline-block;
-    padding: 8px 20px;
-    margin: 4px;
-  }
+.mission {
+  font-size: 20px;
+  display: inline-block;
+  padding: 8px 20px;
+  margin: 4px;
+}
 </style>
