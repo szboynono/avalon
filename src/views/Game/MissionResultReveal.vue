@@ -11,6 +11,7 @@
 import { useStore } from 'vuex';
 import { onMounted, ref } from 'vue';
 import VButtons from '@/components/VButtons.vue';
+import router from '@/router';
 export default {
   components: {
     VButtons
@@ -23,6 +24,9 @@ export default {
       store.getters.socket.emit('turnOver');
     }
     onMounted(() => {
+      store.getters.socket.on('roundInfo', (roundInfo: any) => {
+        router.push('assign-mission');
+      });
       questResults.value = store.getters.missionSuccessResult.players.map((player: any) => {
         return player.successMission.success ? 'Success' : 'Failure';
       });
