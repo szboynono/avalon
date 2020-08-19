@@ -12,8 +12,8 @@
         </div>
       </div>
       <div class="border-top mt-4">
-        <p class="mt-3">The quest is underway</p>
         <div class="mt-3" v-if="isSelected && store.getters.approveResult.result">
+          <p class="mt-3">The quest is underway</p>
           <v-buttons
             v-if="isBadGuy"
             :primaryText="'Success'"
@@ -26,6 +26,10 @@
             :primaryText="'Success'"
             :primaryFn="onSuccessClick"
           />
+        </div>
+        <div class="mt-3" v-if="!store.getters.approveResult.result">
+          <p class="mt-3">The quest is Rejected, Try again</p>
+          <v-buttons :primaryText="'Try again'" :primaryFn="onTryAgainCLick" />
         </div>
       </div>
   </div>
@@ -62,6 +66,11 @@ export default {
     const isBadGuy = computed(() =>
       ["Minion of Mordred", "ASSASIN"].includes(store.getters.role)
     );
+
+    const onTryAgainCLick = () => {
+      store.getters.socket.emit('missionApprovalTryAgain');
+    };
+
     onMounted(() => {
       selectedPlayer.value = store.getters.players.filter(
         (player: any) => player.selected
@@ -70,6 +79,9 @@ export default {
         store.commit('updateMissionSuccessResult', result);
         router.push('mission-result-reveal');
       });
+      store.getters.socket.on("missionApprovalTryAgainDone", () => {
+        router.push('assign-mission');
+      })
     });
     return {
       store,
@@ -78,6 +90,7 @@ export default {
       onSuccessClick,
       onFailureClick,
       isBadGuy,
+      onTryAgainCLick
     };
   },
 };
