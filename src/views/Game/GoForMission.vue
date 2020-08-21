@@ -86,6 +86,9 @@ export default {
         store.commit('updateWinner', winner);
         router.push({name: 'end'});
       });
+      store.getters.socket.on('assasin', () => {
+        console.log('assasin');
+      });
     });
     return {
       store,
