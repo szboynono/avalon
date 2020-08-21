@@ -1,7 +1,9 @@
 <template>
-  <div class="d-flex flex-wrap flex-column justify-content-center">
+  <div>
+    <div class="d-flex flex-wrap justify-content-center">
     <div class="quest border border-muted" v-for="quest in questResults" :key="quest">
       <p>{{quest}}</p>
+    </div>
     </div>
     <v-buttons :primaryText="'Next Round'" :primaryFn="onNextRoundClick" />
   </div>
