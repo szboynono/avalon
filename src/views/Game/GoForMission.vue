@@ -81,7 +81,10 @@ export default {
       });
       store.getters.socket.on("missionApprovalTryAgainDone", () => {
         router.push('assign-mission');
-      })
+      });
+      store.getters.socket.on('gameOver', (winner: string) => {
+        console.log(winner);
+      });
     });
     return {
       store,
