@@ -83,7 +83,8 @@ export default {
         router.push('assign-mission');
       });
       store.getters.socket.on('gameOver', (winner: string) => {
-        console.log(winner);
+        store.commit('updateWinner', winner);
+        router.push({name: 'end'});
       });
     });
     return {

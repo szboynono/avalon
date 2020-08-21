@@ -47,7 +47,12 @@ const routes: Array<any> = [
         component: () => import('../views/Game/MissionResultReveal.vue'),
       },
     ]
-  }
+  },
+  {
+    path: '/end-result',
+    name: 'end',
+    component: () => import('../views/EndResult.vue'),
+  },
 ]
 
 const router = createRouter({
