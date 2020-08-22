@@ -1,12 +1,12 @@
 <template>
   <div>
     <div>
-      <p v-if="computeHowManyMoreManRequired > 0">We still need {{computeHowManyMoreManRequired}} more.</p>
-      <p v-else>We still need {{computeHowManyMoreManRequired}} more.</p>
+      <p v-if="store.getters.leader === store.getters.name">Please select {{computeHowManyMoreManRequired}} more.</p>
+      <p v-else>{{store.getters.leader}} is selecting people, We still need {{computeHowManyMoreManRequired}} more.</p>
     </div>
     <v-list :items="mappedItems" :leader="store.getters.leader" @list-clicked="updateMappedItems" />
     <v-buttons
-      v-if="isLeader"
+      v-if="isLeader && computeHowManyMoreManRequired === 0"
       :primary-text="'Go'"
       :primaryFn="onGoClick"
     />
