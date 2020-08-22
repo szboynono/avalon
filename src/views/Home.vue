@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1>AVALON</h1>
-    <v-buttons :primaryText="'Start Game'" :primaryFn="onStart" :secondaryText="'Join Game'" />
+    <v-buttons :primaryText="'Start Game'" :primaryFn="onStart" :secondaryText="'Join Game'" :secondaryFn="onJoin"/>
   </div>
 </template>
 
@@ -18,8 +18,12 @@ export default {
     function onStart() {
       router.push("/name");
     }
+    function onJoin() {
+      router.push("/join");
+    }
     return {
-      onStart
+      onStart,
+      onJoin
     };
   }
 };

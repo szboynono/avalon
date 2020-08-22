@@ -16,6 +16,11 @@ const routes: Array<any> = [
     component: () => import('../views/Name.vue')
   },
   {
+    path: '/join',
+    name: 'join',
+    component: () => import('../views/Join.vue')
+  },
+  {
     path: '/room/:id',
     name: 'Room',
     component: () => import('../views/Room.vue')
