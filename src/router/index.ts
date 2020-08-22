@@ -46,6 +46,11 @@ const routes: Array<any> = [
         path: 'mission-result-reveal',
         component: () => import('../views/Game/MissionResultReveal.vue'),
       },
+      {
+        path: 'assasin-pick',
+        name: 'assasin',
+        component: () => import('../views/Game/AssasinPick.vue'),
+      },
     ]
   },
   {

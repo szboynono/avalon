@@ -75,6 +75,10 @@ export default {
       selectedPlayer.value = store.getters.players.filter(
         (player: any) => player.selected
       );
+      store.getters.socket.on('assasin', (result: any) => {
+        store.commit('updateMissionSuccessResult', result);
+        router.push({name: 'assasin'});
+      });
       store.getters.socket.on("missionSuccessResult", (result: any) => {
         store.commit('updateMissionSuccessResult', result);
         router.push('mission-result-reveal');
@@ -85,9 +89,6 @@ export default {
       store.getters.socket.on('gameOver', (winner: string) => {
         store.commit('updateWinner', winner);
         router.push({name: 'end'});
-      });
-      store.getters.socket.on('assasin', () => {
-        console.log('assasin');
       });
     });
     return {
