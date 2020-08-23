@@ -1,25 +1,25 @@
 <template>
   <div>
     <div class="d-flex flex-wrap justify-content-center">
-    <div class="quest border border-muted" v-for="quest in questResults" :key="quest">
-      <p>{{quest}}</p>
-    </div>
+      <div class="quest border border-muted" v-for="quest in questResults" :key="quest">
+        <p>{{quest}}</p>
+      </div>
     </div>
     <v-buttons v-if="!actionTaken" :primaryText="'Next Round'" :primaryFn="onNextRoundClick" />
     <div v-else class="spinner-border mt-5" role="status">
-          <span class="sr-only">Loading...</span>
+      <span class="sr-only">Loading...</span>
     </div>
   </div>
 </template>
 
 <script lang='ts'>
-import { useStore } from 'vuex';
-import { onMounted, ref } from 'vue';
-import VButtons from '@/components/VButtons.vue';
-import router from '@/router';
+import { useStore } from "vuex";
+import { onMounted, ref } from "vue";
+import VButtons from "@/components/VButtons.vue";
+import router from "@/router";
 export default {
   components: {
-    VButtons
+    VButtons,
   },
   setup() {
     const store = useStore();
@@ -27,20 +27,22 @@ export default {
     const actionTaken = ref(false);
 
     const onNextRoundClick = () => {
-      store.getters.socket.emit('turnOver');
+      store.getters.socket.emit("turnOver");
       actionTaken.value = true;
-    }
+    };
     onMounted(() => {
-      store.getters.socket.on('roundInfo', (roundInfo: any) => {
-        router.push('assign-mission');
+      store.getters.socket.on("roundInfo", (roundInfo: any) => {
+        router.push("assign-mission");
       });
-      questResults.value = store.getters.missionSuccessResult.players.map((player: any) => {
-        return player.successMission.success ? 'Success' : 'Failure';
-      });
-    })
-    return {questResults, onNextRoundClick, actionTaken};
-  }
-}
+      questResults.value = store.getters.missionSuccessResult.players.map(
+        (player: any) => {
+          return player.successMission.success ? "Success" : "Failure";
+        }
+      );
+    });
+    return { questResults, onNextRoundClick, actionTaken };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
