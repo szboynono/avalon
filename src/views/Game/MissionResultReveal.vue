@@ -5,7 +5,10 @@
       <p>{{quest}}</p>
     </div>
     </div>
-    <v-buttons :primaryText="'Next Round'" :primaryFn="onNextRoundClick" />
+    <v-buttons v-if="!actionTaken" :primaryText="'Next Round'" :primaryFn="onNextRoundClick" />
+    <div v-else class="spinner-border mt-5" role="status">
+          <span class="sr-only">Loading...</span>
+    </div>
   </div>
 </template>
 
@@ -20,10 +23,12 @@ export default {
   },
   setup() {
     const store = useStore();
-    const questResults = ref(); 
+    const questResults = ref();
+    const actionTaken = ref(false);
 
     const onNextRoundClick = () => {
       store.getters.socket.emit('turnOver');
+      actionTaken.value = true;
     }
     onMounted(() => {
       store.getters.socket.on('roundInfo', (roundInfo: any) => {
@@ -33,7 +38,7 @@ export default {
         return player.successMission.success ? 'Success' : 'Failure';
       });
     })
-    return {questResults, onNextRoundClick};
+    return {questResults, onNextRoundClick, actionTaken};
   }
 }
 </script>
