@@ -3,14 +3,19 @@
     <h1>{{titleText}}</h1>
     <h2 v-if="isRoleRevealed">{{store.getters.role}}</h2>
     <div v-if="isMerlin">
-      <p>Your ability is you are able to see all the bad guys.</p>
+      <p>You are able to see all the bad guys.</p>
       <p>Please confirm below.</p>
       <v-list :items="badGuysForMerlin"></v-list>
     </div>
     <div v-if="isPercival">
-      <p>Your ability is you are able to see both Morgana and Merlin, but you won't be able to tell the diffrence</p>
+      <p>You are able to see both Morgana and Merlin, but you won't be able to tell the diffrence</p>
       <p>Please confirm below.</p>
       <v-list :items="guysForPercival"></v-list>
+    </div>
+    <div v-if="isBadGuy">
+      <p>You are able to see all the bad guys except Oberon</p>
+      <p>Please confirm below.</p>
+      <v-list :items="badGuysForBadGuys"></v-list>
     </div>
     <div>
       <v-buttons
@@ -49,8 +54,10 @@ export default {
     const isPlayerReady = ref(false);
     const isMerlin = ref(false);
     const isPercival = ref(false);
+    const isBadGuy = ref(false);
     const badGuysForMerlin = ref([]);
     const guysForPercival = ref([]);
+    const badGuysForBadGuys = ref([]);
     const buttonText = ref("Reveal Myself");
 
     onMounted(() => {
@@ -63,6 +70,10 @@ export default {
         else if(role === 'PERCIVAL') {
           store.getters.socket.emit("percival-vision");
           isPercival.value = true;
+        } 
+        else if(['Minion of Mordred', 'ASSASIN', 'MORGANA', 'MORDRED'].includes(role)) {
+          store.getters.socket.emit('bad-guys-vision');
+          isBadGuy.value = true;
         }
       });
       store.getters.socket.on("readyCheckDone", () => {
@@ -73,6 +84,9 @@ export default {
       });
       store.getters.socket.on("percival-vision-response", (guys: any) => {
         guysForPercival.value = guys;
+      });
+      store.getters.socket.on("bad-guys-vision-response", (guys: any) => {
+        badGuysForBadGuys.value = guys;
       });
     });
 
@@ -106,7 +120,9 @@ export default {
       badGuysForMerlin,
       isMerlin,
       isPercival,
-      guysForPercival
+      isBadGuy,
+      guysForPercival,
+      badGuysForBadGuys
     };
   },
 };
