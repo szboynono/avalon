@@ -3,8 +3,14 @@
     <h1>{{titleText}}</h1>
     <h2 v-if="isRoleRevealed">{{store.getters.role}}</h2>
     <div v-if="isMerlin">
-      <p>Please confirm the bad guys.</p>
+      <p>Your ability is you are able to see all the bad guys.</p>
+      <p>Please confirm below.</p>
       <v-list :items="badGuysForMerlin"></v-list>
+    </div>
+    <div v-if="isPercival">
+      <p>Your ability is you are able to see both Morgana and Merlin, but you won't be able to tell the diffrence</p>
+      <p>Please confirm below.</p>
+      <v-list :items="guysForPercival"></v-list>
     </div>
     <div>
       <v-buttons
@@ -42,7 +48,9 @@ export default {
     const isRoleRevealed = ref(false);
     const isPlayerReady = ref(false);
     const isMerlin = ref(false);
+    const isPercival = ref(false);
     const badGuysForMerlin = ref([]);
+    const guysForPercival = ref([]);
     const buttonText = ref("Reveal Myself");
 
     onMounted(() => {
@@ -52,12 +60,19 @@ export default {
           store.getters.socket.emit("merlin-vision");
           isMerlin.value = true;
         }
+        else if(role === 'PERCIVAL') {
+          store.getters.socket.emit("percival-vision");
+          isPercival.value = true;
+        }
       });
       store.getters.socket.on("readyCheckDone", () => {
         router.push("/game/" + store.getters.room + "/assign-mission");
       });
       store.getters.socket.on("merlin-vision-response", (badGuys: any) => {
         badGuysForMerlin.value = badGuys;
+      });
+      store.getters.socket.on("percival-vision-response", (guys: any) => {
+        guysForPercival.value = guys;
       });
     });
 
@@ -89,7 +104,9 @@ export default {
       isPlayerReady,
       titleText,
       badGuysForMerlin,
-      isMerlin
+      isMerlin,
+      isPercival,
+      guysForPercival
     };
   },
 };
