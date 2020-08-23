@@ -1,7 +1,10 @@
 <template>
   <div>
     <h1>Room: {{store.getters.room}}</h1>
-    <h2>Waiting for {{calcWaitingPlayers}} more players...</h2>
+    <div>
+      <h2 v-if="calcWaitingPlayers > 0">Waiting for {{calcWaitingPlayers}} more players...</h2>
+      <h2 v-else>We have {{store.getters.players.length}} players.</h2>
+    </div>
     <div class="spinner-border" role="status">
       <span class="sr-only">Loading...</span>
     </div>

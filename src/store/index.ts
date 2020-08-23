@@ -12,7 +12,8 @@ const state = {
   round: -1,
   approveResult: {},
   missionSuccessResult: {},
-  winner: ''
+  winner: '',
+  missionList: []
 }
 
 const mutations = {
@@ -49,6 +50,9 @@ const mutations = {
   },
   updateWinner(state: any, winner: string) {
     state.winner = winner;
+  },
+  updateMissionList(state: any, missionList: any[]) {
+    state.missionList = missionList;
   }
 }
 
@@ -85,6 +89,9 @@ const getters = {
   },
   winner(state: any) {
     return state.winner;
+  },
+  missionList(state: any) {
+    return state.missionList;
   }
 }
 

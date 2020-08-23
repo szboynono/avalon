@@ -70,7 +70,7 @@ export default {
     );
 
     const isBadGuy = computed(() =>
-      ["Minion of Mordred", "ASSASIN"].includes(store.getters.role)
+      ["OBERON", "MORGANA", "Minion of Mordred", "ASSASIN"].includes(store.getters.role)
     );
 
     const onTryAgainCLick = () => {

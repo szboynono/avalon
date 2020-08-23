@@ -1,7 +1,13 @@
 <template>
   <div>
     <div>
-      <p v-if="store.getters.leader === store.getters.name">Please select {{computeHowManyMoreManRequired}} more.</p>
+      <template v-if="store.getters.leader === store.getters.name">
+        <div>
+          <p v-if="computeHowManyMoreManRequired > 0">Please select {{computeHowManyMoreManRequired}} more.</p>
+          <p v-if="computeHowManyMoreManRequired < 0">Too many!</p>
+          <p v-else>We have enough!</p>
+        </div>
+      </template>
       <p v-else>{{store.getters.leader}} is selecting people, We still need {{computeHowManyMoreManRequired}} more.</p>
     </div>
     <v-list :items="mappedItems" :leader="store.getters.leader" @list-clicked="updateMappedItems" />
@@ -45,18 +51,15 @@ export default {
     };
 
     const computeHowManyMoreManRequired = computed(() => {
-      return (
-        manRequired.value -
-        mappedItems.value.filter((item: any) => item.selected === true).length
-      );
+      return manRequired.value -
+        mappedItems.value.filter((item: any) => item.selected === true).length;
     });
 
     const isLeader = computed(() => store.getters.leader === store.getters.name);
 
     watchEffect(
       () =>
-        (manRequired.value =
-          store.getters.round === 0 || store.getters.round === 2 ? 2 : 3)
+        (manRequired.value = store.getters.missionList[store.getters.round])
     );
 
     onMounted(() => {

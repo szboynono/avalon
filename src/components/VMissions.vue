@@ -1,21 +1,20 @@
 <template>
   <div>
-    <div class="mission border rounded" :class="createClass(0)">2</div>
-    <div class="mission border rounded" :class="createClass(1)">3</div>
-    <div class="mission border rounded" :class="createClass(2)">2</div>
-    <div class="mission border rounded" :class="createClass(3)">3</div>
-    <div class="mission border rounded" :class="createClass(4)">3</div>
+    <div v-for="(num, index) in missionList" :key="num" class="mission border rounded" :class="createClass(index)">{{num}}</div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, onMounted } from "vue";
 export default defineComponent({
-  props: ["round", "gameResult"],
+  props: ["round", "gameResult", "missionList"],
   setup(props) {
     const activeClasses = "border-primary";
     const successClasses = "bg-success text-white";
     const failureClasses = "bg-danger text-white";
+    onMounted(() => {
+      console.log(props.missionList);
+    })
     const createClass = (round: number) => {
       const outputClasses = [];
       if(round === props.round) {
