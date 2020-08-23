@@ -4,7 +4,7 @@
       <template v-if="store.getters.leader === store.getters.name">
         <div>
           <p v-if="computeHowManyMoreManRequired > 0">Please select {{computeHowManyMoreManRequired}} more.</p>
-          <p v-if="computeHowManyMoreManRequired < 0">Too many!</p>
+          <p v-else-if="computeHowManyMoreManRequired < 0">Too many!</p>
           <p v-else>We have enough!</p>
         </div>
       </template>

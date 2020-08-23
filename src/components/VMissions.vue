@@ -5,16 +5,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, onMounted } from "vue";
+import { defineComponent, computed } from "vue";
 export default defineComponent({
   props: ["round", "gameResult", "missionList"],
   setup(props) {
     const activeClasses = "border-primary";
     const successClasses = "bg-success text-white";
     const failureClasses = "bg-danger text-white";
-    onMounted(() => {
-      console.log(props.missionList);
-    })
+
     const createClass = (round: number) => {
       const outputClasses = [];
       if(round === props.round) {

@@ -1,9 +1,9 @@
 <template>
-  <div class="name">
+  <form class="name" @submit.prevent="onContinueClick">
     <h1>What is your name ?</h1>
     <input v-model="nameInput" type="text" class="form-control" placeholder="WHO ARE YOU ?" />
     <v-buttons :primaryText="'Continue'" :primaryFn="onContinueClick" />
-  </div>
+  </form>
 </template>
 
 <script lang="ts">
@@ -26,7 +26,6 @@ export default ({
           .get("http://localhost:8081/room")
           .then(res => {
             if (res.data) {
-              console.log(res.data);
               store.commit('updateRoom', res.data)
             }
           })
