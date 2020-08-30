@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 const state = {
   name: '',
   room: '',
+  owner: '',
   socket: undefined,
   id: '',
   players: [],
@@ -24,6 +25,9 @@ const mutations = {
   },
   updateRoom(state: any, room: string) {
     state.room = room;
+  },
+  updateOwner(state: any, owner: string) {
+    state.owner = owner;
   },
   updateSocket(state: any) {
     state.socket = io("http://localhost:8081/" + state.room);
@@ -59,10 +63,8 @@ const mutations = {
     state.newGame = newGame;
   },
   reset(state: any) {
-    state.id = '';
     state.players = [];
     state.role = '';
-    state.leader = '';
     state.round = -1;
     state.approveResult = {};
     state.missionSuccessResult = {};
@@ -77,6 +79,9 @@ const getters = {
   },
   room(state: any) {
     return state.room
+  },
+  owner(state: any) {
+    return state.owner
   },
   socket(state: any) {
     return state.socket

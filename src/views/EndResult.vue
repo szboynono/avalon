@@ -21,14 +21,11 @@ export default {
     const store = useStore();
     onMounted(() => {
       winner.value = store.getters.winner;
-      store.getters.socket.on("newGameUserList", (users: any[]) => {
-        console.log('in end');
-        store.commit("updatePlayers", users);
-      });
     });
 
     const onNewGameClick = () => {
-      store.getters.socket.emit('newGame');
+      const newRoom = store.getters.room + '1';
+      store.getters.socket.emit('newGame', newRoom);
       store.commit("reset");
       store.commit("updateNewGame", true);
       router.push('/room/' + store.getters.room);

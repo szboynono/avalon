@@ -40,20 +40,25 @@ export default {
 
       if (!store.getters.name) {
         router.push("/name");
-      } else {
+      } else if(!store.getters.newGame){
         store.commit("updateSocket");
       }
 
       if (store.getters.room && store.getters.name && store.getters.socket) {
         const socket = store.getters.socket;
-        socket.emit("name", store.getters.name);
+        if(!store.getters.newGame) {
+          socket.emit("name", store.getters.name);
+        }
+        socket.emit("askForOwner");
         socket.on("id", (id: any) => {
           store.commit("updateId", id);
         });
         socket.on("userList", (users: any[]) => {
+          console.log(users);
           store.commit("updatePlayers", users);
         });
         socket.on("owner", (id: any) => {
+          store.commit('updateOwner', owner);
           if (store.getters.id === id) {
             owner.value = true;
           }

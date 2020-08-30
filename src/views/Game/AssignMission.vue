@@ -32,17 +32,11 @@ export default {
   },
   setup() {
     const store = useStore();
-    const mappedItems = ref(
-      store.getters.players.map((player: any) => ({
-        ...player,
-        selected: false,
-      }))
-    );
+    const mappedItems = ref(store.getters.players);
     const manRequired = ref(0);
 
     const updateMappedItems = (index: any) => {
       mappedItems.value[index].selected = !mappedItems.value[index].selected;
-      store.commit("updatePlayers", mappedItems.value);
       store.getters.socket.emit("updateSelections", mappedItems.value);
     };
 
@@ -51,8 +45,10 @@ export default {
     };
 
     const computeHowManyMoreManRequired = computed(() => {
-      return manRequired.value -
-        mappedItems.value.filter((item: any) => item.selected === true).length;
+      if(mappedItems.value) {
+        return manRequired.value -
+          mappedItems.value.filter((item: any) => item.selected === true).length;
+      }
     });
 
     const isLeader = computed(() => store.getters.leader === store.getters.name);
@@ -63,13 +59,14 @@ export default {
     );
 
     onMounted(() => {
-      store.commit("updatePlayers", mappedItems.value);
       store.getters.socket.on("userList", (users: any) => {
         mappedItems.value = users;
+        store.commit("updatePlayers", users);
       });
       store.getters.socket.on("goToVote", () => {
         router.push('approve-mission');
       });
+
     });
     return {
       store,
