@@ -7,13 +7,14 @@ const state = {
   socket: undefined,
   id: '',
   players: [],
-  role: [],
+  role: '',
   leader: '',
   round: -1,
   approveResult: {},
   missionSuccessResult: {},
   winner: '',
-  missionList: []
+  missionList: [],
+  newGame: false
 }
 
 const mutations = {
@@ -53,6 +54,20 @@ const mutations = {
   },
   updateMissionList(state: any, missionList: any[]) {
     state.missionList = missionList;
+  },
+  updateNewGame(state: any, newGame: boolean) {
+    state.newGame = newGame;
+  },
+  reset(state: any) {
+    state.id = '';
+    state.players = [];
+    state.role = '';
+    state.leader = '';
+    state.round = -1;
+    state.approveResult = {};
+    state.missionSuccessResult = {};
+    state.winner = '';
+    state.missionList = [];
   }
 }
 
@@ -92,6 +107,9 @@ const getters = {
   },
   missionList(state: any) {
     return state.missionList;
+  },
+  newGame(state: any) {
+    return state.newGame;
   }
 }
 
