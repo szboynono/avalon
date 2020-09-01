@@ -30,7 +30,7 @@ const mutations = {
     state.owner = owner;
   },
   updateSocket(state: any) {
-    state.socket = io("http://localhost:8081/" + state.room);
+    state.socket = io(`${process.env.VUE_APP_BE_URL}` + state.room);
   },
   updateId(state: any, id: string) {
     state.id = id
