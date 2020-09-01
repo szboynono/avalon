@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1>AVALON</h1>
+    <h1>AVAL<div class="d-inline-block animate__animated animate__flip animate__delay-1s">O</div>N</h1>
     <v-buttons :primaryText="'Start Game'" :primaryFn="onStart" :secondaryText="'Join Game'" :secondaryFn="onJoin"/>
   </div>
 </template>
@@ -31,6 +31,12 @@ export default {
 
 <style lang="scss" scoped>
   .home {
+
+    h1{
+      font-size: 5rem;
+      letter-spacing: -12px;
+    }
+
     margin-top: 8rem;
   }
 </style>
