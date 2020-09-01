@@ -23,7 +23,7 @@ export default ({
     onMounted(() => {
       if(!store.getters.room) {
         axios
-          .get(`${process.env.VUE_APP_BE_URL}`)
+          .get(`${process.env.VUE_APP_BE_URL}/room`)
           .then(res => {
             if (res.data) {
               store.commit('updateRoom', res.data)
