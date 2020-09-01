@@ -54,7 +54,6 @@ export default {
           store.commit("updateId", id);
         });
         socket.on("userList", (users: any[]) => {
-          console.log(users);
           store.commit("updatePlayers", users);
         });
         socket.on("owner", (id: any) => {
