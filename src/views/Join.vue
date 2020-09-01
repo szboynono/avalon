@@ -1,6 +1,6 @@
 <template>
   <div class="join">
-    <h1>What is thr room number ?</h1>
+    <h1>What is thr room ?</h1>
     <input v-model="roomInput" type="text" class="form-control" placeholder="room number ?" />
     <v-buttons :primaryText="'Continue'" :primaryFn="onContinueClick" />
   </div>
@@ -30,7 +30,7 @@ export default ({
 </script>
 
 <style lang="scss" scoped>
-.name {
+.join {
   margin-top: 8rem;
   & input {
     margin: 1rem auto;

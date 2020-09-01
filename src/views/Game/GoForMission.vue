@@ -12,8 +12,14 @@
         </div>
       </div>
       <div class="border-top mt-4">
+        <div v-if="!isSelected">
+          <p>The quest is underway...</p>
+          <div class="spinner-border mt-3" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
         <div class="mt-3" v-if="isSelected && store.getters.approveResult.result && !actionTaken">
-          <p class="mt-3">The quest is underway</p>
+          <p class="mt-3">Let's do the quest! Select from below...</p>
           <v-buttons
             v-if="isBadGuy"
             :primaryText="'Success'"
