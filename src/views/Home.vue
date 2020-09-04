@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img class="animate__animated animate__flipInX" src="../assets/magic.svg" alt="magic" />
+    <img class="animate__animated animate__flipInX animate__delay-1s" src="../assets/magic.svg" alt="magic" />
     <h1 class="text-dark">AVALON</h1>
     <v-buttons
       :primaryText="'Start Game'"
