@@ -59,9 +59,7 @@ export default defineComponent({
   cursor: pointer;
 }
 
-.clickable-list:hover {
-  background-color: #007bff;
-}
+
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -69,5 +67,11 @@ export default defineComponent({
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently */
+}
+
+@media only screen and (min-width: 1440px) {
+  .clickable-list:hover {
+    background-color: #007bff;
+  }
 }
 </style>
