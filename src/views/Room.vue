@@ -1,14 +1,14 @@
 <template>
-  <div>
-    <h1>Room: {{store.getters.room}}</h1>
-    <div>
-      <h2 v-if="calcWaitingPlayers > 0">Waiting for {{calcWaitingPlayers}} more players...</h2>
-      <h2 v-else>We have {{store.getters.players.length}} players.</h2>
+  <div class="mt-5">
+    <h1>Room {{store.getters.room}}</h1>
+    <div class="d-inline-block waiting-text">
+      <p v-if="calcWaitingPlayers > 0">Waiting for {{calcWaitingPlayers}} more players...</p>
+      <p v-else>We have {{store.getters.players.length}} players.</p>
     </div>
-    <div class="spinner-border" role="status">
+    <div v-if="calcWaitingPlayers > 0" class="spinner-border mt-3" role="status">
       <span class="sr-only">Loading...</span>
     </div>
-    <v-list :items="store.getters.players" />
+    <v-list class="d-block mt-3" :items="store.getters.players" />
     <v-buttons v-if="owner" :primaryText="'Start Game'" :primaryFn="onStart" />
   </div>
 </template>
@@ -80,3 +80,11 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.waiting-text {
+  position: relative;
+  bottom: 8px;
+  margin-right: 8px;
+}
+</style>

@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h1>{{titleText}}</h1>
-    <h2 v-if="isRoleRevealed">{{store.getters.role}}</h2>
+  <div class="mt-5">
+    <h4>{{titleText}}</h4>
+    <h1 v-if="isRoleRevealed" class="mt-4" :class="isBadGuy ? 'text-danger': 'text-primary'">{{store.getters.role}}</h1>
     <div v-if="isMerlin">
       <p>You are able to see all the bad guys.</p>
       <p>Please confirm below.</p>
@@ -49,7 +49,7 @@ export default {
   },
   setup() {
     const store = useStore();
-    const titleText = ref("Click the button to reveal you role");
+    const titleText = ref("What role am I playing?");
     const isRoleRevealed = ref(false);
     const isPlayerReady = ref(false);
     const isMerlin = ref(false);
@@ -98,7 +98,7 @@ export default {
 
     watch(isPlayerReady, () => {
       if (isPlayerReady.value) {
-        titleText.value = "Waiting for other players";
+        titleText.value = "Waiting for other players...";
       }
     });
 
