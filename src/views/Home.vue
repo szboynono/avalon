@@ -1,7 +1,13 @@
 <template>
   <div class="home">
-    <h1>AVAL<div class="d-inline-block animate__animated animate__flip animate__delay-1s">O</div>N</h1>
-    <v-buttons :primaryText="'Start Game'" :primaryFn="onStart" :secondaryText="'Join Game'" :secondaryFn="onJoin"/>
+    <img class="animate__animated animate__flipInX" src="../assets/magic.svg" alt="magic" />
+    <h1 class="text-dark">AVALON</h1>
+    <v-buttons
+      :primaryText="'Start Game'"
+      :primaryFn="onStart"
+      :secondaryText="'Join Game'"
+      :secondaryFn="onJoin"
+    />
   </div>
 </template>
 
@@ -23,20 +29,24 @@ export default {
     }
     return {
       onStart,
-      onJoin
+      onJoin,
     };
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-  .home {
-
-    h1{
-      font-size: 5rem;
-      letter-spacing: -12px;
-    }
-
-    margin-top: 8rem;
+.home {
+  img {
+    width: 286px;
   }
+
+  h1 {
+    font-size: 5rem;
+    font-weight: bold;
+    letter-spacing: -12px;
+  }
+
+  margin-top: 4rem;
+}
 </style>
