@@ -1,20 +1,27 @@
 <template>
   <div class="mt-5">
     <h4>{{titleText}}</h4>
-    <h1 v-if="isRoleRevealed" class="mt-4" :class="isBadGuy ? 'text-danger': 'text-primary'">{{store.getters.role}}</h1>
+    <div v-if="isRoleRevealed" class="mt-4">
+      <h1 :class="isBadGuy ? 'text-danger': 'text-primary'">{{store.getters.role}}</h1>
+      <p :class="isBadGuy ? 'text-danger': 'text-primary'">{{!isBadGuy ? 'Servant of Arthor' : 'Minion of Mordred'}}</p>
+    </div>
     <div v-if="isMerlin">
-      <p>You are able to see all the bad guys.</p>
+      <p :class="isBadGuy ? 'text-danger': 'text-primary'">Knows evil, must remain hidden</p>
+      <hr />
       <p>Please confirm below.</p>
       <v-list :items="badGuysForMerlin"></v-list>
     </div>
     <div v-if="isPercival">
-      <p>You are able to see both Morgana and Merlin, but you won't be able to tell the diffrence</p>
+      <p :class="isBadGuy ? 'text-danger': 'text-primary'">Knows Merlin</p>
       <p>Please confirm below.</p>
+      <hr />
       <v-list :items="guysForPercival"></v-list>
     </div>
     <div v-if="isBadGuy">
-      <p>You are able to see all the bad guys except Oberon</p>
-      <p>Please confirm below.</p>
+      <p v-if="store.getters.role === 'MORGANA'" :class="isBadGuy ? 'text-danger': 'text-primary'">Appears as Merlin</p>
+      <p v-if="store.getters.role === 'OBERON'" :class="isBadGuy ? 'text-danger': 'text-primary'">Unknown to evil</p>
+      <hr />
+      <p>Please confirm below...</p>
       <v-list :items="badGuysForBadGuys"></v-list>
     </div>
     <div>
@@ -71,7 +78,7 @@ export default {
           store.getters.socket.emit("percival-vision");
           isPercival.value = true;
         } 
-        else if(['Minion of Mordred', 'ASSASIN', 'MORGANA', 'MORDRED'].includes(role)) {
+        else if(['Minion of Mordred', 'ASSASIN', 'MORGANA', 'MORDRED', 'OBERON'].includes(role)) {
           store.getters.socket.emit('bad-guys-vision');
           isBadGuy.value = true;
         }
