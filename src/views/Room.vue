@@ -29,6 +29,7 @@ export default {
   setup() {
     const store = useStore();
     const owner = ref(false);
+    const showStartButton = ref(false);
 
     const calcWaitingPlayers = computed(() => 5 - store.getters.players.length);
 
@@ -70,13 +71,20 @@ export default {
 
     onMounted(() => {
       setGameInfo();
+      if(process.env.VUE_APP_IS_PROD === true && owner.value && calcWaitingPlayers.value <= 0) {
+        showStartButton.value = true;
+      } else if (process.env.VUE_APP_IS_PROD === false && owner.value) {
+        showStartButton.value = true;
+      } else {
+        showStartButton.value = false;
+      }
     });
 
     const onStart = () => {
       store.getters.socket.emit("start");
     };
 
-    return { store, owner, onStart, calcWaitingPlayers };
+    return { store, owner, onStart, calcWaitingPlayers, showStartButton };
   }
 };
 </script>
