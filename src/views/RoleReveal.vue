@@ -21,7 +21,7 @@
       <p v-if="store.getters.role === 'MORGANA'" :class="isBadGuy ? 'text-danger': 'text-primary'">Appears as Merlin</p>
       <p v-if="store.getters.role === 'OBERON'" :class="isBadGuy ? 'text-danger': 'text-primary'">Unknown to evil</p>
       <hr />
-      <p>Please confirm below...</p>
+      <p>Please confirm your allies...</p>
       <v-list :items="badGuysForBadGuys"></v-list>
     </div>
     <div>
