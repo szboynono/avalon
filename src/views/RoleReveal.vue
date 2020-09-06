@@ -4,6 +4,13 @@
     <div v-if="isRoleRevealed" class="mt-4">
       <h1 :class="isBadGuy ? 'text-danger': 'text-primary'">{{store.getters.role}}</h1>
       <p :class="isBadGuy ? 'text-danger': 'text-primary'">{{!isBadGuy ? 'Servant of Arthor' : 'Minion of Mordred'}}</p>
+      <img v-if="store.getters.role === 'ASSASIN'" src="../assets/assasin.svg" alt="assasin">
+      <img v-if="store.getters.role === 'Minion of Mordred'" src="../assets/bad-guy.svg" alt="Minion of Mordred">
+      <img v-if="store.getters.role === 'Loyal Servant of Arthor'" src="../assets/good-guy.svg" alt="Loyal Servant of Arthor">
+      <img v-if="store.getters.role === 'MERLIN'" src="../assets/merlin.svg" alt="MERLIN">
+      <img v-if="store.getters.role === 'MORGANA'" src="../assets/morgana.svg" alt="MORGANA">
+      <img v-if="store.getters.role === 'OBERON'" src="../assets/oberon.svg" alt="OBERON">
+      <img v-if="store.getters.role === 'PERCIVAL'" src="../assets/percival.svg" alt="PERCIVAL">
     </div>
     <div v-if="isMerlin">
       <p :class="isBadGuy ? 'text-danger': 'text-primary'">Knows evil, must remain hidden</p>
@@ -93,7 +100,7 @@ export default {
         guysForPercival.value = guys;
       });
       store.getters.socket.on("bad-guys-vision-response", (guys: any) => {
-        badGuysForBadGuys.value = guys;
+        badGuysForBadGuys.value = guys.filter((guy: any) => guy.name !== store.getters.name);
       });
     });
 
@@ -134,3 +141,9 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+  img {
+    width: 148px;
+    margin-bottom: 16px;
+  }
+</style>

@@ -3,9 +3,9 @@
     <div>
       <template v-if="store.getters.leader === store.getters.name">
         <div>
-          <p v-if="computeHowManyMoreManRequired > 0">Please select {{computeHowManyMoreManRequired}} more.</p>
-          <p v-else-if="computeHowManyMoreManRequired < 0">Too many!</p>
-          <p v-else>We have enough!</p>
+          <p v-if="computeHowManyMoreManRequired > 0">Please select <span class="text-primary font-weight-bold">{{computeHowManyMoreManRequired}}</span> more.</p>
+          <p v-else-if="computeHowManyMoreManRequired < 0" class="text-danger">Too many!</p>
+          <p v-else class="text-warning">We have enough!</p>
         </div>
       </template>
       <p v-else>{{store.getters.leader}} is selecting people, We still need {{computeHowManyMoreManRequired}} more.</p>
