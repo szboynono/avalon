@@ -1,9 +1,15 @@
 <template>
   <div>
     <div class="d-flex flex-wrap justify-content-center">
-      <div class="quest border border-muted" v-for="quest in questResults" :key="quest">
-        <p>{{quest}}</p>
-      </div>
+      <ul class="list-group">
+        <li class="list-group-item quest" v-for="quest in questResults" :key="quest" :class="quest === true ? 'bg-success' : 'bg-danger'">
+          <p class="mb-0 text-white font-weight-bold display-4">
+            {{quest === true ? 'SUCCESS' : 'FAILURE'}}
+          </p>
+        </li>
+      </ul>
+      <p v-if="questFinalResult" class="mt-3 text-success">Mission Success !!</p>
+      <p v-if="!questFinalResult" class="mt-3 text-danger">Mission Failed !! Someone voted FAILURE</p>
     </div>
     <v-buttons v-if="!actionTaken" :primaryText="'Next Round'" :primaryFn="onNextRoundClick" />
     <div v-else class="spinner-border mt-5" role="status">
@@ -25,6 +31,7 @@ export default {
     const store = useStore();
     const questResults = ref();
     const actionTaken = ref(false);
+    const questFinalResult = ref(true);
 
     const onNextRoundClick = () => {
       store.getters.socket.emit("turnOver");
@@ -36,18 +43,20 @@ export default {
       });
       questResults.value = store.getters.missionSuccessResult.players.map(
         (player: any) => {
-          return player.successMission.success ? "Success" : "Failure";
+          if(player.successMission.success === false) {
+            questFinalResult.value = false;
+          }
+          return player.successMission.success
         }
       );
     });
-    return { questResults, onNextRoundClick, actionTaken };
+    return { questResults, onNextRoundClick, actionTaken, questFinalResult };
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .quest {
-  width: 150px;
-  height: 200px;
+  width: 321px;
 }
 </style>
