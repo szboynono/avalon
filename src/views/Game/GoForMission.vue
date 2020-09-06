@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="border-top mt-4">
-        <div v-if="!isSelected">
+        <div v-if="!isSelected && store.getters.approveResult.result && actionTaken">
           <p>The quest is underway...</p>
           <div class="spinner-border mt-3" role="status">
             <span class="sr-only">Loading...</span>
@@ -35,10 +35,10 @@
         </div>
         <div class="mt-3" v-if="!store.getters.approveResult.result && !actionTaken">
           <p class="mt-3">The quest is Rejected, Try again</p>
-          <v-buttons :primaryText="'Try again'" :primaryFn="onTryAgainCLick" />
+          <v-buttons v-if="!tryAgainActionTaken" :primaryText="'Try again'" :primaryFn="onTryAgainCLick" />
         </div>
-        <div v-if="actionTaken" class="spinner-border mt-5" role="status">
-          <span class="sr-only">Loading...</span>
+        <div v-if="tryAgainActionTaken" class="spinner-border mt-3" role="status">
+            <span class="sr-only">Loading...</span>
         </div>
       </div>
   </div>
@@ -60,6 +60,7 @@ export default {
     const store = useStore();
     const selectedPlayer = ref([]);
     const actionTaken = ref(false);
+    const tryAgainActionTaken = ref(false);
 
     const onSuccessClick = () => {
       store.getters.socket.emit("submitMissonSuccessVote", true);
@@ -81,7 +82,7 @@ export default {
 
     const onTryAgainCLick = () => {
       store.getters.socket.emit('missionApprovalTryAgain');
-      actionTaken.value = true;
+      tryAgainActionTaken.value = true;
     };
 
     onMounted(() => {
@@ -112,7 +113,8 @@ export default {
       onFailureClick,
       isBadGuy,
       onTryAgainCLick,
-      actionTaken
+      actionTaken,
+      tryAgainActionTaken
     };
   },
 };

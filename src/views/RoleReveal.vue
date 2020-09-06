@@ -20,8 +20,8 @@
     </div>
     <div v-if="isPercival">
       <p :class="isBadGuy ? 'text-danger': 'text-primary'">Knows Merlin</p>
-      <p>Please confirm below.</p>
       <hr />
+      <p>Please confirm below.</p>
       <v-list :items="guysForPercival"></v-list>
     </div>
     <div v-if="isBadGuy">
