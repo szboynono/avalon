@@ -8,9 +8,9 @@
           </p>
         </li>
       </ul>
+    </div>
       <p v-if="questFinalResult" class="mt-3 text-success">Mission Success !!</p>
       <p v-if="!questFinalResult" class="mt-3 text-danger">Mission Failed !! Someone voted FAILURE</p>
-    </div>
     <v-buttons v-if="!actionTaken" :primaryText="'Next Round'" :primaryFn="onNextRoundClick" />
     <div v-else class="spinner-border mt-5" role="status">
       <span class="sr-only">Loading...</span>
