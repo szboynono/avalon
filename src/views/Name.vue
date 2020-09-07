@@ -1,6 +1,6 @@
 <template>
   <form class="name" @submit.prevent="onContinueClick">
-    <h1>What is your name ?</h1>
+    <h2 class="mb-4">What is your name ?</h2>
     <input v-model="nameInput" type="text" class="form-control" placeholder="WHO ARE YOU ?" />
     <v-buttons :primaryText="'Continue'" :primaryFn="onContinueClick" />
   </form>
