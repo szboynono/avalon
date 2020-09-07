@@ -9,14 +9,14 @@
       <span class="sr-only">Loading...</span>
     </div>
     <v-list class="d-block mt-3" :items="store.getters.players" />
-    <v-buttons v-if="owner" :primaryText="'Start Game'" :primaryFn="onStart" />
+    <v-buttons v-if="showStartButton" :primaryText="'Start Game'" :primaryFn="onStart" />
   </div>
 </template>
 
 <script lang="ts">
 import VList from "@/components/VList.vue";
 import { useStore } from "vuex";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watchEffect } from "vue";
 import router from "../router";
 import VButtons from "@/components/VButtons.vue";
 
@@ -70,14 +70,17 @@ export default {
 
     onMounted(() => {
       setGameInfo();
-      if(process.env.VUE_APP_IS_PROD === true && owner.value && calcWaitingPlayers.value <= 0) {
+    });
+
+    watchEffect(() => {
+      if(process.env.VUE_APP_IS_PROD === 'true' && calcWaitingPlayers.value <= 0 && owner.value=== true) {
         showStartButton.value = true;
-      } else if (process.env.VUE_APP_IS_PROD === false && owner.value) {
+      } else if (process.env.VUE_APP_IS_PROD === 'false' && owner.value=== true) {
         showStartButton.value = true;
       } else {
         showStartButton.value = false;
       }
-    });
+    })
 
     const onStart = () => {
       store.getters.socket.emit("start");
