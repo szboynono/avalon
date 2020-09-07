@@ -18,7 +18,6 @@ import VList from "@/components/VList.vue";
 import { useStore } from "vuex";
 import { ref, onMounted, computed } from "vue";
 import router from "../router";
-import axios from "axios";
 import VButtons from "@/components/VButtons.vue";
 
 export default {

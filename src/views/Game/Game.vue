@@ -13,11 +13,9 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref, computed, watch, watchEffect } from "vue";
+import { onMounted, ref, computed, watchEffect } from "vue";
 import { useStore } from "vuex";
 import VMissions from "@/components/VMissions.vue";
-import VList from "@/components/VList.vue";
-import VButtons from "@/components/VButtons.vue";
 
 export default {
   components: {

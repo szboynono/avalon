@@ -26,7 +26,7 @@
 import VList from "@/components/VList.vue";
 import VButtons from "@/components/VButtons.vue";
 import { useStore } from "vuex";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 export default {
   components: {

@@ -38,7 +38,7 @@ export default {
       actionTaken.value = true;
     };
     onMounted(() => {
-      store.getters.socket.on("roundInfo", (roundInfo: any) => {
+      store.getters.socket.on("roundInfo", () => {
         router.push("assign-mission");
       });
       questResults.value = store.getters.missionSuccessResult.players.map(
