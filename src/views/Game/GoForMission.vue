@@ -37,7 +37,7 @@
           <p class="mt-3">The quest is Rejected, Try again</p>
           <v-buttons v-if="!tryAgainActionTaken" :primaryText="'Try again'" :primaryFn="onTryAgainCLick" />
         </div>
-        <div v-if="tryAgainActionTaken" class="spinner-border mt-3" role="status">
+        <div v-if="tryAgainActionTaken || actionTaken" class="spinner-border mt-3" role="status">
             <span class="sr-only">Loading...</span>
         </div>
       </div>
