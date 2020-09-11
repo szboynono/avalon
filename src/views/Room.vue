@@ -8,8 +8,25 @@
     <div v-if="calcWaitingPlayers > 0" class="spinner-border mt-3" role="status">
       <span class="sr-only">Loading...</span>
     </div>
-    <v-list class="d-block mt-3" :items="store.getters.players" />
+    <v-list class="d-block" :items="store.getters.players" />
+    <div class="row mt-3" v-if="calcWaitingPlayers <= 0">
+      <div class="col-6">
+        <h4 class="text-primary">GOOD</h4>
+        <v-list :items="goodRoles" />
+      </div>
+      <div class="col-6">
+        <h4 class="text-danger">EVIL</h4>
+        <v-list :items="evilRoles" />
+      </div>
+    </div>
     <v-buttons v-if="showStartButton" :primaryText="'Start Game'" :primaryFn="onStart" />
+    <div v-if="calcWaitingPlayers <= 0 && owner === false" class="mt-4">
+      <p>Waiting for the owner to start the game...</p>
+    <div class="spinner-border mt-3" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    </div>
+    
   </div>
 </template>
 
@@ -29,8 +46,51 @@ export default {
     const store = useStore();
     const owner = ref(false);
     const showStartButton = ref(false);
+    const evilRoles = ref([{ name: "MORGANA" }, { name: "ASSASIN" }]);
+    const goodRoles = ref([
+      { name: "MERLIN" },
+      { name: "PERCIVAL" },
+      { name: "SERVANT OF ARTHOR" },
+    ]);
 
     const calcWaitingPlayers = computed(() => 5 - store.getters.players.length);
+
+    watchEffect(() => {
+      if (store.getters.players.length === 6) {
+        evilRoles.value = [{ name: "MORGANA" }, { name: "ASSASIN" }];
+        goodRoles.value = [
+          { name: "MERLIN" },
+          { name: "PERCIVAL" },
+          { name: "SERVANT OF ARTHOR" },
+          { name: "SERVANT OF ARTHOR" },
+        ];
+      } else if (store.getters.players.length === 7) {
+        evilRoles.value = [
+          { name: "MORGANA" },
+          { name: "ASSASIN" },
+          { name: "OBERON" },
+        ];
+        goodRoles.value = [
+          { name: "MERLIN" },
+          { name: "PERCIVAL" },
+          { name: "SERVANT OF ARTHOR" },
+          { name: "SERVANT OF ARTHOR" },
+        ];
+      } else if (store.getters.players.length === 8) {
+        evilRoles.value = [
+          { name: "MORGANA" },
+          { name: "ASSASIN" },
+          { name: "OBERON" },
+          { name: "Minion of Mordred" },
+        ];
+        goodRoles.value = [
+          { name: "MERLIN" },
+          { name: "PERCIVAL" },
+          { name: "SERVANT OF ARTHOR" },
+          { name: "SERVANT OF ARTHOR" },
+        ];
+      }
+    });
 
     const setGameInfo = () => {
       store.commit("updateRoom", router.currentRoute.value.params.id);
@@ -99,7 +159,15 @@ export default {
       store.getters.socket.emit("start");
     };
 
-    return { store, owner, onStart, calcWaitingPlayers, showStartButton };
+    return {
+      store,
+      owner,
+      onStart,
+      calcWaitingPlayers,
+      showStartButton,
+      evilRoles,
+      goodRoles,
+    };
   },
 };
 </script>
