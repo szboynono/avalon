@@ -1,3 +1,4 @@
+import store from '@/store';
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 
@@ -69,5 +70,13 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+// handle back button
+window.onpopstate = function (event: any) {
+  alert('You just pressed the back button, boooom!');
+  store.commit('updateRoom', '');
+  store.commit('reset');
+  router.push({ name: 'Home' });
+};
 
 export default router
