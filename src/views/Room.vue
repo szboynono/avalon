@@ -23,7 +23,7 @@ import VButtons from "@/components/VButtons.vue";
 export default {
   components: {
     VList,
-    VButtons
+    VButtons,
   },
   setup() {
     const store = useStore();
@@ -40,13 +40,19 @@ export default {
 
       if (!store.getters.name) {
         router.push("/name");
-      } else if(!store.getters.newGame){
+      } else if (!store.getters.newGame) {
         store.commit("updateSocket");
+      }
+
+      if (store.getters.socket) {
+        store.getters.socket.on("nameExist", () => {
+          router.push("/name");
+        });
       }
 
       if (store.getters.room && store.getters.name && store.getters.socket) {
         const socket = store.getters.socket;
-        if(!store.getters.newGame) {
+        if (!store.getters.newGame) {
           socket.emit("name", store.getters.name);
         }
         socket.emit("askForOwner");
@@ -57,7 +63,7 @@ export default {
           store.commit("updatePlayers", users);
         });
         socket.on("owner", (id: any) => {
-          store.commit('updateOwner', owner);
+          store.commit("updateOwner", owner);
           if (store.getters.id === id) {
             owner.value = true;
           }
@@ -73,21 +79,28 @@ export default {
     });
 
     watchEffect(() => {
-      if(process.env.VUE_APP_IS_PROD === 'true' && calcWaitingPlayers.value <= 0 && owner.value=== true) {
+      if (
+        process.env.VUE_APP_IS_PROD === "true" &&
+        calcWaitingPlayers.value <= 0 &&
+        owner.value === true
+      ) {
         showStartButton.value = true;
-      } else if (process.env.VUE_APP_IS_PROD === 'false' && owner.value=== true) {
+      } else if (
+        process.env.VUE_APP_IS_PROD === "false" &&
+        owner.value === true
+      ) {
         showStartButton.value = true;
       } else {
         showStartButton.value = false;
       }
-    })
+    });
 
     const onStart = () => {
       store.getters.socket.emit("start");
     };
 
     return { store, owner, onStart, calcWaitingPlayers, showStartButton };
-  }
+  },
 };
 </script>
 
