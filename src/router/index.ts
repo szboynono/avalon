@@ -71,12 +71,15 @@ const router = createRouter({
   routes
 })
 
-// handle back button
-window.onpopstate = function (event: any) {
-  alert('You just pressed the back button, boooom!');
-  store.commit('updateRoom', '');
-  store.commit('reset');
-  router.push({ name: 'Home' });
-};
+router.beforeEach((to, from, next) => {
+  if (to.name === 'Name' && from.name === 'Room' && store.getters.name) {
+    const confirmation = confirm('You are going back to the Home Page.');
+    if(confirmation) {
+      store.commit('updateRoom', '');
+      next({ name: 'Home' });
+    } else next(false);
+  }
+  else next()
+})
 
 export default router
