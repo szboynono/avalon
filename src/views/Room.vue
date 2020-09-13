@@ -1,6 +1,7 @@
 <template>
   <div class="mt-5">
     <h1>Room <span class="text-info">{{store.getters.room}}</span></h1>
+    <p class="text-info">Invite your friends now! Tell them your room number!</p>
     <div class="d-inline-block waiting-text">
       <p v-if="calcWaitingPlayers > 0">Waiting for {{calcWaitingPlayers}} more players...</p>
       <p v-else>We have {{store.getters.players.length}} players.</p>
